@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FarmBoxx AI - Register</title>
+       <meta name="description" content="FarmBoxx AI - Livestock Management">
+    <meta name="keywords" content="FarmBoxx, AI, Livestock, Management">
+    <meta name="author" content="Ibrahim Warris">
+    <link rel="icon" type="image/x-icon" href="../asset/img/farmlogo1.png">
+    <!-- Bootstrap CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome Icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-orange: #FF8C00;
+            --primary-blue: #00BFFF;
+            --text-dark: #333333;
+            --text-muted: #6c757d;
+            --bg-light: #f8f9fa;
+            --white: #ffffff;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8f9fa;
+            color: var(--text-dark);
+        }
+        
+        .navbar {
+            padding: 15px 0;
+            background-color: var(--white);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+        
+        .navbar-brand {
+            display: flex;
+            align-items: center;
+        }
+        
+        .navbar-brand span:first-child {
+            color: var(--primary-orange);
+            font-weight: 700;
+        }
+        
+        .navbar-brand span:nth-child(2) {
+            color: var(--primary-blue);
+            font-weight: 700;
+        }
+        
+        .navbar-brand span:last-child {
+            color: #000;
+            font-weight: 700;
+        }
+        
+        .language-dropdown {
+            display: flex;
+            align-items: center;
+            border: 1px solid #e0e0e0;
+            border-radius: 50px;
+            padding: 6px 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .language-dropdown:hover {
+            background-color: #f5f5f5;
+        }
+        
+        .language-dropdown i {
+            margin-right: 8px;
+            color: var(--primary-blue);
+        }
+        
+        .register-container {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 0;
+        }
+        
+        .register-card {
+            background-color: var(--white);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            max-width: 500px;
+            width: 100%;
+            position: relative;
+        }
+        
+        .register-card-header {
+            text-align: center;
+            padding: 30px 20px;
+        }
+        
+        .logo {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+        
+        .logo-farm {
+            color: var(--primary-orange);
+        }
+        
+        .logo-boxx {
+            color: var(--primary-blue);
+        }
+        
+        .logo-ai {
+            color: #000;
+        }
+        
+        .register-card-body {
+            padding: 0 30px 30px;
+        }
+        
+        .form-control {
+            height: 50px;
+            border-radius: 8px;
+            border: 1px solid #e0e0e0;
+            padding-left: 45px;
+            margin-bottom: 20px;
+            font-size: 16px;
+        }
+        
+        .form-control:focus {
+            box-shadow: 0 0 0 3px rgba(0, 191, 255, 0.1);
+            border-color: var(--primary-blue);
+        }
+        
+        .form-floating>label {
+            padding-left: 45px;
+        }
+        
+        .input-icon {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            left: 15px;
+            color: #999;
+            z-index: 10;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary-orange);
+            border-color: var(--primary-orange);
+            height: 50px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 16px;
+            margin-top: 10px;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary:hover {
+            background-color: #e67e00;
+            border-color: #e67e00;
+        }
+        
+        .divider {
+            display: flex;
+            align-items: center;
+            margin: 30px 0;
+            color: var(--text-muted);
+        }
+        
+        .divider-line {
+            flex-grow: 1;
+            height: 1px;
+            background-color: #e0e0e0;
+        }
+        
+        .divider-text {
+            padding: 0 15px;
+            font-size: 14px;
+        }
+        
+        .social-btn-container {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+        
+        .social-btn {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 20px;
+            transition: all 0.3s ease;
+        }
+        
+        .facebook-btn {
+            background-color: #3b5998;
+        }
+        
+        .google-btn {
+            background-color: #db4a39;
+        }
+        
+        .whatsapp-btn {
+            background-color: #25D366;
+        }
+        
+        .social-btn:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+        }
+        
+        .toggle-container {
+            display: flex;
+            background-color: #f5f5f5;
+            border-radius: 50px;
+            margin-bottom: 25px;
+            overflow: hidden;
+        }
+        
+        .toggle-option {
+            flex: 1;
+            text-align: center;
+            padding: 12px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            color: var(--text-muted);
+        }
+        
+        .toggle-option.active {
+            background-color: var(--primary-blue);
+            color: white;
+        }
+        
+        .form-check {
+            margin-bottom: 15px;
+        }
+        
+        .form-check-input:checked {
+            background-color: var(--primary-blue);
+            border-color: var(--primary-blue);
+        }
+        
+        .form-check-label {
+            font-size: 14px;
+            color: var(--text-muted);
+        }
+        
+        .login-link {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 14px;
+            color: var(--text-muted);
+        }
+        
+        .login-link a {
+            color: var(--primary-orange);
+            text-decoration: none;
+            font-weight: 600;
+        }
+        
+        .ussd-info {
+            margin-top: 30px;
+            background-color: #f5f5f5;
+            border-radius: 8px;
+            padding: 15px;
+            text-align: center;
+            font-size: 14px;
+            color: var(--text-muted);
+        }
+        
+        .ussd-code {
+            font-weight: 700;
+            color: var(--text-dark);
+        }
+        
+        .form-select {
+            height: 50px;
+            border-radius: 8px;
+            border: 1px solid #e0e0e0;
+            padding-left: 45px;
+            margin-bottom: 20px;
+            font-size: 16px;
+            background-position: right 15px center;
+        }
+        
+        .form-select:focus {
+            box-shadow: 0 0 0 3px rgba(0, 191, 255, 0.1);
+            border-color: var(--primary-blue);
+        }
+        
+        .password-toggle {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            right: 15px;
+            color: #999;
+            cursor: pointer;
+            z-index: 10;
+        }
+        
+        .input-container {
+            position: relative;
+            margin-bottom: 20px;
+        }
+        
+        .hide-on-toggle {
+            display: none;
+        }
+        
+        @media (max-width: 576px) {
+            .register-card {
+                margin: 0 15px;
+            }
+            
+            .register-card-header {
+                padding: 20px 15px;
+            }
+            
+            .register-card-body {
+                padding: 0 20px 20px;
+            }
+        }
+        
+        .decoration-circle {
+            position: absolute;
+            background-color: rgba(255, 140, 0, 0.1);
+            border-radius: 50%;
+        }
+        
+        .circle-1 {
+            width: 150px;
+            height: 150px;
+            top: -75px;
+            right: -75px;
+        }
+        
+        .circle-2 {
+            width: 100px;
+            height: 100px;
+            bottom: -50px;
+            left: -50px;
+            background-color: rgba(0, 191, 255, 0.1);
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <span>Farm</span><span>Boxx</span><span>AI</span>
+            </a>
+            <div class="language-dropdown ms-auto">
+                <i class="fas fa-globe"></i>
+                English
+                <i class="fas fa-chevron-down ms-2"></i>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Registration Section -->
+    <section class="register-container">
+        <div class="container">
+            <div class="register-card">
+                <div class="decoration-circle circle-1"></div>
+                <div class="decoration-circle circle-2"></div>
+                
+                <div class="register-card-header">
+                    <div class="logo">
+                        <span class="logo-farm">Farm</span><span class="logo-boxx">Boxx</span> <span class="logo-ai">AI</span>
+                    </div>
+                    <h2>Create Account</h2>
+                    <p class="text-muted">Join the smart livestock management revolution</p>
+                </div>
+                
+                <div class="register-card-body">
+                    <div class="toggle-container mb-4">
+                        <div class="toggle-option active" id="farmer-toggle">Farmer</div>
+                        <div class="toggle-option" id="buyer-toggle">Buyer</div>
+                    </div>
+                    
+                    <form>
+                        <div class="row">
+                            <div class="col-6">
+                                <div class="input-container">
+                                    <i class="fas fa-user input-icon"></i>
+                                    <input type="text" class="form-control" placeholder="First Name">
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="input-container">
+                                    <input type="text" class="form-control" placeholder="Last Name">
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="input-container">
+                            <i class="fas fa-phone input-icon"></i>
+                            <input type="tel" class="form-control" placeholder="Phone Number">
+                        </div>
+                        
+                        <div class="input-container farmer-field">
+                            <i class="fas fa-map-marker-alt input-icon"></i>
+                            <select class="form-select">
+                                <option selected disabled>Select your state</option>
+                                <option>Kaduna</option>
+                                <option>Ogun</option>
+                                <option>Lagos</option>
+                                <option>Kano</option>
+                                <option>Borno</option>
+                                <option>Plateau</option>
+                                <option>Enugu</option>
+                                <option>Rivers</option>
+                                <option>FCT Abuja</option>
+                                <option>Other</option>
+                            </select>
+                        </div>
+                        
+                        <div class="input-container farmer-field">
+                            <i class="fas fa-horse input-icon"></i>
+                            <select class="form-select">
+                                <option selected disabled>Select main livestock</option>
+                                <option>Cattle</option>
+                                <option>Goats</option>
+                                <option>Sheep</option>
+                                <option>Poultry</option>
+                                <option>Pigs</option>
+                                <option>Mixed</option>
+                            </select>
+                        </div>
+                        
+                        <div class="input-container">
+                            <i class="fas fa-lock input-icon"></i>
+                            <input type="password" class="form-control" id="password" placeholder="Create Password">
+                            <i class="far fa-eye password-toggle" id="togglePassword"></i>
+                        </div>
+                        
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="terms">
+                            <label class="form-check-label" for="terms">
+                                I agree to the Terms & Privacy Policy
+                            </label>
+                        </div>
+                        
+                        <a href="sign-in.html" class="btn btn-primary w-100">Register</a>
+                    </form>
+                    
+                    <div class="divider">
+                        <div class="divider-line"></div>
+                        <div class="divider-text">or continue with</div>
+                        <div class="divider-line"></div>
+                    </div>
+                    
+                    <div class="social-btn-container">
+                        <a href="#" class="social-btn facebook-btn">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="#" class="social-btn google-btn">
+                            <i class="fab fa-google"></i>
+                        </a>
+                        <a href="#" class="social-btn whatsapp-btn">
+                            <i class="fab fa-whatsapp"></i>
+                        </a>
+                    </div>
+                    
+                    <div class="login-link">
+                        Already have an account? <a href="sign-in.html">Login</a>
+                    </div>
+                    
+                    <div class="ussd-info">
+                        No internet? Dial <span class="ussd-code">*347*123#</span> to access FarmBoxx AI via USSD
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Bootstrap Bundle with Popper -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        // Farmer/Buyer toggle functionality
+        document.getElementById('farmer-toggle').addEventListener('click', function() {
+            this.classList.add('active');
+            document.getElementById('buyer-toggle').classList.remove('active');
+            document.querySelectorAll('.farmer-field').forEach(el => {
+                el.style.display = 'block';
+            });
+        });
+        
+        document.getElementById('buyer-toggle').addEventListener('click', function() {
+            this.classList.add('active');
+            document.getElementById('farmer-toggle').classList.remove('active');
+            document.querySelectorAll('.farmer-field').forEach(el => {
+                el.style.display = 'none';
+            });
+        });
+        
+        // Password visibility toggle
+        document.getElementById('togglePassword').addEventListener('click', function() {
+            const passwordInput = document.getElementById('password');
+            const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+            passwordInput.setAttribute('type', type);
+            
+            // Toggle eye icon
+            this.classList.toggle('fa-eye');
+            this.classList.toggle('fa-eye-slash');
+        });
+    </script>
+</body>
+</html>

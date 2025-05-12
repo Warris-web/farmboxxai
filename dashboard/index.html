@@ -1,0 +1,1144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FarmBoxx AI - Livestock Management Dashboard</title>
+    <meta name="description" content="FarmBoxx AI - Livestock Management Dashboard">
+    <meta name="keywords" content="FarmBoxx, AI, Livestock, Management, Dashboard">
+    <meta name="author" content="Ibrahim Warris">
+    <link rel="icon" type="image/x-icon" href="../asset/img/farmlogo1.png">
+        <!-- Bootstrap CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome Icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <!-- Animate.css for animations -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet">
+    <!-- Chart.js for charts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <style>
+        :root {
+            --primary: #FF8C00;
+            --secondary: #00BFFF;
+            --dark: #000000;
+            --light: #f8f9fa;
+            --gray: #6c757d;
+            --gray-light: #e9ecef;
+            --success: #28a745;
+            --danger: #dc3545;
+            --warning: #ffc107;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8f9fa;
+            color: var(--dark);
+        }
+        
+        /* Custom animation for pulsing markers */
+        .pulse-animation {
+            animation: pulse-animation 2s infinite;
+        }
+        
+        @keyframes pulse-animation {
+            0% {
+                box-shadow: 0 0 0 0 rgba(220, 53, 69, 0.7);
+            }
+            70% {
+                box-shadow: 0 0 0 10px rgba(220, 53, 69, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(220, 53, 69, 0);
+            }
+        }
+        
+        .sidebar {
+            background-color: var(--dark);
+            color: white;
+            height: 100vh;
+            position: fixed;
+            transition: all 0.3s ease;
+            width: 250px;
+            z-index: 1000;
+        }
+        
+        .sidebar.collapsed {
+            width: 70px;
+        }
+        
+        .sidebar .logo {
+            padding: 20px;
+            text-align: center;
+            background-color: #fff;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            border-right:1px solid var(--dark);
+        }
+        
+        .sidebar .logo img {
+            height: 40px;
+            transition: all 0.3s ease;
+        }
+        
+        .sidebar.collapsed .logo img {
+            height: 30px;
+        }
+        
+        .sidebar .nav-link {
+            color: rgba(255, 255, 255, 0.8);
+            padding: 12px 20px;
+            margin: 5px 0;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+        
+        .sidebar .nav-link:hover, .sidebar .nav-link.active {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        .sidebar .nav-link i {
+            margin-right: 15px;
+            width: 20px;
+            text-align: center;
+        }
+        
+        .sidebar.collapsed .nav-link span {
+            display: none;
+        }
+        
+        .sidebar.collapsed .nav-link i {
+            margin-right: 0;
+        }
+        
+        .main-content {
+            margin-left: 250px;
+            padding: 20px;
+            transition: all 0.3s ease;
+        }
+        
+        .main-content.expanded {
+            margin-left: 70px;
+        }
+        
+        .card {
+            border-radius: 10px;
+            border: none;
+            box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.05);
+            margin-bottom: 20px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.1);
+        }
+        
+        .card-header {
+            background-color: white;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+            font-weight: 600;
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+        }
+        
+        .stats-card {
+            text-align: center;
+            padding: 15px;
+        }
+        
+        .stats-card i {
+            font-size: 2rem;
+            margin-bottom: 10px;
+            color: var(--primary);
+        }
+        
+        .stats-card h3 {
+            font-size: 1.8rem;
+            margin-bottom: 5px;
+            font-weight: 700;
+        }
+        
+        .stats-card p {
+            color: var(--gray);
+            margin-bottom: 0;
+        }
+        
+        .health-indicator {
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 5px;
+        }
+        
+        .health-good {
+            background-color: var(--success);
+        }
+        
+        .health-warning {
+            background-color: var(--warning);
+        }
+        
+        .health-critical {
+            background-color: var(--danger);
+        }
+        
+        .animal-card {
+            border-left: 4px solid var(--primary);
+            padding: 10px;
+            margin-bottom: 10px;
+            background-color: white;
+            border-radius: 5px;
+            box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+            transition: all 0.3s ease;
+        }
+        
+        .animal-card:hover {
+            transform: translateX(5px);
+            box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
+        }
+        
+        .btn-primary {
+            background-color: var(--primary);
+            border-color: var(--primary);
+        }
+        
+        .btn-primary:hover {
+            background-color: #e67e00;
+            border-color: #e67e00;
+        }
+        
+        .btn-secondary {
+            background-color: var(--secondary);
+            border-color: var(--secondary);
+        }
+        
+        .btn-secondary:hover {
+            background-color: #00a8e6;
+            border-color: #00a8e6;
+        }
+        
+        .navbar {
+            background-color: white;
+            box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+        }
+        
+        .map-container {
+            height: 400px;
+            background-color: #e9ecef;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        
+        .alert-section {
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        
+        .alert-item {
+            padding: 10px;
+            border-left: 3px solid;
+            margin-bottom: 10px;
+            background-color: white;
+            border-radius: 5px;
+        }
+        
+        .alert-critical {
+            border-left-color: var(--danger);
+        }
+        
+        .alert-warning {
+            border-left-color: var(--warning);
+        }
+        
+        .alert-info {
+            border-left-color: var(--secondary);
+        }
+        
+        .activity-timeline {
+            position: relative;
+            max-height: 350px;
+            overflow-y: auto;
+        }
+        
+        .activity-item {
+            padding: 15px;
+            padding-left: 30px;
+            position: relative;
+            border-left: 2px solid var(--gray-light);
+            margin-left: 10px;
+        }
+        
+        .activity-item::before {
+            content: '';
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: var(--primary);
+            left: -7px;
+            top: 20px;
+        }
+        
+        .activity-item .time {
+            font-size: 0.8rem;
+            color: var(--gray);
+        }
+        
+        .toggle-btn {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 0;
+        }
+        
+        .notification-badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            font-size: 0.7rem;
+            background-color: var(--danger);
+        }
+        
+        .dropdown-item:active {
+            background-color: var(--primary);
+        }
+        
+        .market-item {
+            border: 1px solid var(--gray-light);
+            border-radius: 5px;
+            padding: 10px;
+            margin-bottom: 10px;
+            transition: all 0.3s ease;
+        }
+        
+        .market-item:hover {
+            border-color: var(--primary);
+            background-color: rgba(255, 140, 0, 0.05);
+        }
+        
+        .progress {
+            height: 10px;
+            border-radius: 5px;
+        }
+        
+        .progress-bar {
+            background-color: var(--primary);
+        }
+        
+        /* Animations */
+        .fade-in {
+            animation: fadeIn 1s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .slide-in {
+            animation: slideIn 0.5s ease;
+        }
+        
+        @keyframes slideIn {
+            from { transform: translateX(-20px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        .rotate-icon {
+            animation: rotate 1s linear infinite;
+        }
+        
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: var(--gray);
+            border-radius: 10px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar -->
+    <div class="sidebar" id="sidebar">
+        <div class="logo">
+            <img src="../asset/img/farmlogo1.png" alt="FarmBoxx AI Logo" class="img-fluid">
+        </div>
+        <ul class="nav flex-column mt-4">
+            <li class="nav-item">
+                <a class="nav-link active slide-in" href="#">
+                    <i class="fas fa-tachometer-alt"></i>
+                    <span>Dashboard</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link slide-in" href="#" style="animation-delay: 0.1s;">
+                    <i class="fas fa-cow"></i>
+                    <span>Livestock</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link slide-in" href="#" style="animation-delay: 0.2s;">
+                    <i class="fas fa-heartbeat"></i>
+                    <span>Health Monitor</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link slide-in" href="#" style="animation-delay: 0.3s;">
+                    <i class="fas fa-route"></i>
+                    <span>Grazing Routes</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link slide-in" href="#" style="animation-delay: 0.4s;">
+                    <i class="fas fa-user-md"></i>
+                    <span>Veterinary</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link slide-in" href="#" style="animation-delay: 0.5s;">
+                    <i class="fas fa-store"></i>
+                    <span>Marketplace</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link slide-in" href="#" style="animation-delay: 0.6s;">
+                    <i class="fas fa-truck"></i>
+                    <span>Logistics</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link slide-in" href="#" style="animation-delay: 0.7s;">
+                    <i class="fas fa-chart-line"></i>
+                    <span>Analytics</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link slide-in" href="#" style="animation-delay: 0.8s;">
+                    <i class="fas fa-cog"></i>
+                    <span>Settings</span>
+                </a>
+            </li>
+        </ul>
+        <div class="mt-auto p-3 text-center">
+            <button id="toggle-sidebar" class="toggle-btn">
+                <i class="fas fa-chevron-left"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content" id="main-content">
+        <!-- Navbar -->
+        <nav class="navbar navbar-expand-lg mb-4">
+            <div class="container-fluid">
+                <h5 class="mb-0">FarmBoxx AI Dashboard</h5>
+                <div class="d-flex align-items-center">
+                    <div class="dropdown me-3">
+                        <button class="btn position-relative" type="button" id="notificationDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fas fa-bell"></i>
+                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                3
+                            </span>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="notificationDropdown">
+                            <li><h6 class="dropdown-header">Notifications</h6></li>
+                            <li><a class="dropdown-item" href="#"><i class="fas fa-exclamation-triangle text-warning me-2"></i> Unusual activity detected in cow #1042</a></li>
+                            <li><a class="dropdown-item" href="#"><i class="fas fa-thermometer-half text-danger me-2"></i> High temperature alert for goat #506</a></li>
+                            <li><a class="dropdown-item" href="#"><i class="fas fa-check text-success me-2"></i> Veterinary visit scheduled for tomorrow</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item text-center" href="#">View all notifications</a></li>
+                        </ul>
+                    </div>
+                    <div class="dropdown">
+                        <button class="btn d-flex align-items-center" type="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                            <img src="../asset/img/card-image.png" alt="User" class="rounded-circle me-2" width="32">
+                            <span>Musa Abdullahi</span>
+                            <i class="fas fa-chevron-down ms-2"></i>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                            <li><a class="dropdown-item" href="#"><i class="fas fa-user me-2"></i> Profile</a></li>
+                            <li><a class="dropdown-item" href="#"><i class="fas fa-cog me-2"></i> Settings</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="#"><i class="fas fa-sign-out-alt me-2"></i> Logout</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Dashboard Content -->
+        <div class="container-fluid">
+            <!-- Overview Section -->
+            <div class="row fade-in">
+                <div class="col-lg-3 col-md-6">
+                    <div class="card stats-card">
+                        <i class="fas fa-cow"></i>
+                        <h3>127</h3>
+                        <p>Total Livestock</p>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="card stats-card">
+                        <i class="fas fa-heart"></i>
+                        <h3>120</h3>
+                        <p>Healthy Animals</p>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="card stats-card">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <h3>7</h3>
+                        <p>Health Alerts</p>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="card stats-card">
+                        <i class="fas fa-chart-line"></i>
+                        <h3>₦2.4M</h3>
+                        <p>Est. Market Value</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Main Dashboard Section -->
+            <div class="row mt-4">
+                <!-- Left Column -->
+                <div class="col-lg-8">
+                    <!-- Livestock Location Map -->
+                    <div class="card fade-in" style="animation-delay: 0.2s;">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <h5 class="mb-0">Livestock Location Tracking</h5>
+                            <div class="btn-group" role="group">
+                                <button type="button" class="btn btn-sm btn-outline-secondary">All</button>
+                                <button type="button" class="btn btn-sm btn-outline-secondary">Cattle</button>
+                                <button type="button" class="btn btn-sm btn-outline-secondary">Goats</button>
+                                <button type="button" class="btn btn-sm btn-outline-secondary">Sheep</button>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="map-container position-relative">
+                                <div id="livestockMap" style="width: 100%; height: 400px; border-radius: 10px;"></div>
+                                <div class="position-absolute bg-white p-2 rounded shadow" style="bottom: 10px; right: 10px; z-index: 1000;">
+                                    <div class="d-flex align-items-center mb-1">
+                                        <div class="health-indicator health-good"></div>
+                                        <small>Normal (118)</small>
+                                    </div>
+                                    <div class="d-flex align-items-center mb-1">
+                                        <div class="health-indicator health-warning"></div>
+                                        <small>Warning (6)</small>
+                                    </div>
+                                    <div class="d-flex align-items-center">
+                                        <div class="health-indicator health-critical"></div>
+                                        <small>Critical (3)</small>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mt-3">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <i class="fas fa-sync-alt me-2 rotate-icon"></i>
+                                        <small>Last updated: 5 minutes ago</small>
+                                    </div>
+                                    <button class="btn btn-sm btn-primary">
+                                        <i class="fas fa-route me-1"></i> Plan Grazing Route
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Health Monitoring -->
+                    <div class="card mt-4 fade-in" style="animation-delay: 0.4s;">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <h5 class="mb-0">Health Monitoring</h5>
+                            <div>
+                                <select class="form-select form-select-sm">
+                                    <option selected>Last 7 days</option>
+                                    <option>Last 30 days</option>
+                                    <option>Last 90 days</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <canvas id="healthChart" height="250"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- Recent Activities -->
+                    <div class="card mt-4 fade-in" style="animation-delay: 0.6s;">
+                        <div class="card-header">
+                            <h5 class="mb-0">Recent Activities</h5>
+                        </div>
+                        <div class="card-body p-0">
+                            <div class="activity-timeline">
+                                <div class="activity-item">
+                                    <div class="d-flex justify-content-between">
+                                        <h6>Health check performed on cattle #1042</h6>
+                                        <span class="time">1 hour ago</span>
+                                    </div>
+                                    <p class="mb-0">Temperature: 38.5°C, Heart rate: 70 bpm</p>
+                                </div>
+                                <div class="activity-item">
+                                    <div class="d-flex justify-content-between">
+                                        <h6>Veterinary appointment scheduled</h6>
+                                        <span class="time">3 hours ago</span>
+                                    </div>
+                                    <p class="mb-0">Dr. Adebayo will visit on May 13, 2025 at 10:00 AM</p>
+                                </div>
+                                <div class="activity-item">
+                                    <div class="d-flex justify-content-between">
+                                        <h6>New livestock registered</h6>
+                                        <span class="time">Yesterday</span>
+                                    </div>
+                                    <p class="mb-0">Added 2 new goats to your inventory</p>
+                                </div>
+                                <div class="activity-item">
+                                    <div class="d-flex justify-content-between">
+                                        <h6>Livestock moved to new grazing area</h6>
+                                        <span class="time">2 days ago</span>
+                                    </div>
+                                    <p class="mb-0">Moved 35 cattle to Northern pasture</p>
+                                </div>
+                                <div class="activity-item">
+                                    <div class="d-flex justify-content-between">
+                                        <h6>Marketplace listing created</h6>
+                                        <span class="time">3 days ago</span>
+                                    </div>
+                                    <p class="mb-0">Listed 5 cattle for sale at ₦350,000 each</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Column -->
+                <div class="col-lg-4">
+                    <!-- Livestock Inventory -->
+                    <div class="card fade-in" style="animation-delay: 0.3s;">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <h5 class="mb-0">Livestock Inventory</h5>
+                            <button class="btn btn-sm btn-primary">
+                                <i class="fas fa-plus"></i> Add New
+                            </button>
+                        </div>
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between mb-3">
+                                <div>
+                                    <i class="fas fa-cow me-2" style="color: var(--primary);"></i>
+                                    <span>Cattle</span>
+                                </div>
+                                <span>72</span>
+                            </div>
+                            <div class="d-flex justify-content-between mb-3">
+                                <div>
+                                    <i class="fas fa-sheep me-2" style="color: var(--primary);"></i>
+                                    <span>Sheep</span>
+                                </div>
+                                <span>25</span>
+                            </div>
+                            <div class="d-flex justify-content-between mb-3">
+                                <div>
+                                    <i class="fas fa-horse me-2" style="color: var(--primary);"></i>
+                                    <span>Goats</span>
+                                </div>
+                                <span>30</span>
+                            </div>
+                            <hr>
+                            <div class="mt-3">
+                                <h6>Age Distribution</h6>
+                                <canvas id="ageDistributionChart" height="180"></canvas>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Health Alerts -->
+                    <div class="card mt-4 fade-in" style="animation-delay: 0.5s;">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <h5 class="mb-0">Health Alerts</h5>
+                            <span class="badge bg-danger">3 Critical</span>
+                        </div>
+                        <div class="card-body alert-section p-2">
+                            <div class="alert-item alert-critical slide-in">
+                                <div class="d-flex justify-content-between">
+                                    <h6>Cattle #1042</h6>
+                                    <span class="badge bg-danger">Critical</span>
+                                </div>
+                                <p class="mb-1">High temperature detected: 40.2°C</p>
+                                <small>15 minutes ago</small>
+                                <div class="mt-2">
+                                    <button class="btn btn-sm btn-outline-primary">View Details</button>
+                                    <button class="btn btn-sm btn-primary">Contact Vet</button>
+                                </div>
+                            </div>
+                            <div class="alert-item alert-warning slide-in" style="animation-delay: 0.2s;">
+                                <div class="d-flex justify-content-between">
+                                    <h6>Goat #506</h6>
+                                    <span class="badge bg-warning text-dark">Warning</span>
+                                </div>
+                                <p class="mb-1">Unusual behavior detected</p>
+                                <small>45 minutes ago</small>
+                                <div class="mt-2">
+                                    <button class="btn btn-sm btn-outline-primary">View Details</button>
+                                </div>
+                            </div>
+                            <div class="alert-item alert-warning slide-in" style="animation-delay: 0.4s;">
+                                <div class="d-flex justify-content-between">
+                                    <h6>Sheep #238</h6>
+                                    <span class="badge bg-warning text-dark">Warning</span>
+                                </div>
+                                <p class="mb-1">Low activity level</p>
+                                <small>1 hour ago</small>
+                                <div class="mt-2">
+                                    <button class="btn btn-sm btn-outline-primary">View Details</button>
+                                </div>
+                            </div>
+                            <div class="alert-item alert-info slide-in" style="animation-delay: 0.6s;">
+                                <div class="d-flex justify-content-between">
+                                    <h6>Cattle #987</h6>
+                                    <span class="badge bg-info">Info</span>
+                                </div>
+                                <p class="mb-1">Vaccination due in 3 days</p>
+                                <small>2 hours ago</small>
+                                <div class="mt-2">
+                                    <button class="btn btn-sm btn-outline-primary">Schedule</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Market Insights -->
+                    <div class="card mt-4 fade-in" style="animation-delay: 0.7s;">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <h5 class="mb-0">Market Insights</h5>
+                            <button class="btn btn-sm btn-secondary">
+                                <i class="fas fa-sync-alt"></i>
+                            </button>
+                        </div>
+                        <div class="card-body">
+                            <h6>Current Market Prices</h6>
+                            <div class="market-item">
+                                <div class="d-flex justify-content-between">
+                                    <span>Cattle (per head)</span>
+                                    <span class="fw-bold">₦350,000</span>
+                                </div>
+                                <div class="d-flex align-items-center mt-1">
+                                    <small class="text-success me-2">
+                                        <i class="fas fa-arrow-up"></i> 5.2%
+                                    </small>
+                                    <small>vs last week</small>
+                                </div>
+                            </div>
+                            <div class="market-item">
+                                <div class="d-flex justify-content-between">
+                                    <span>Goats (per head)</span>
+                                    <span class="fw-bold">₦75,000</span>
+                                </div>
+                                <div class="d-flex align-items-center mt-1">
+                                    <small class="text-danger me-2">
+                                        <i class="fas fa-arrow-down"></i> 2.1%
+                                    </small>
+                                    <small>vs last week</small>
+                                </div>
+                            </div>
+                            <div class="market-item">
+                                <div class="d-flex justify-content-between">
+                                    <span>Sheep (per head)</span>
+                                    <span class="fw-bold">₦85,000</span>
+                                </div>
+                                <div class="d-flex align-items-center mt-1">
+                                    <small class="text-success me-2">
+                                        <i class="fas fa-arrow-up"></i> 1.8%
+                                    </small>
+                                    <small>vs last week</small>
+                                </div>
+                            </div>
+                            <div class="text-center mt-3">
+                                <button class="btn btn-sm btn-primary">
+                                    <i class="fas fa-store me-1"></i> Visit Marketplace
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Weather Forecast -->
+                    <div class="card mt-4 fade-in" style="animation-delay: 0.8s;">
+                        <div class="card-header">
+                            <h5 class="mb-0">Weather Forecast</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <div>
+                                    <h3 class="mb-0">28°C</h3>
+                                    <p class="mb-0">Kaduna, Nigeria</p>
+                                </div>
+                                <i class="fas fa-sun fa-3x text-warning"></i>
+                            </div>
+                            <div class="row text-center mt-3">
+                                <div class="col">
+                                    <p class="mb-1">Mon</p>
+                                    <i class="fas fa-cloud-sun"></i>
+                                    <p class="mb-0">27°C</p>
+                                </div>
+                                <div class="col">
+                                    <p class="mb-1">Tue</p>
+                                    <i class="fas fa-sun"></i>
+                                    <p class="mb-0">30°C</p>
+                                </div>
+                                <div class="col">
+                                    <p class="mb-1">Wed</p>
+                                    <i class="fas fa-cloud-rain"></i>
+                                    <p class="mb-0">25°C</p>
+                                </div>
+                                <div class="col">
+                                    <p class="mb-1">Thu</p>
+                                    <i class="fas fa-cloud"></i>
+                                    <p class="mb-0">26°C</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Upcoming Tasks Section -->
+            <div class="row mt-4 fade-in" style="animation-delay: 0.9s;">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <h5 class="mb-0">Upcoming Tasks</h5>
+                            <button class="btn btn-sm btn-primary">
+                                <i class="fas fa-plus me-1"></i> Add Task
+                            </button>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>Task</th>
+                                            <th>Priority</th>
+                                            <th>Date</th>
+                                            <th>Status</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>Veterinary check-up for cattle group A</td>
+                                            <td><span class="badge bg-danger">High</span></td>
+                                            <td>May 13, 2025</td>
+                                            <td><span class="badge bg-warning">Pending</span></td>
+                                            <td>
+                                                <button class="btn btn-sm btn-outline-primary me-1"><i class="fas fa-edit"></i></button>
+                                                <button class="btn btn-sm btn-outline-success"><i class="fas fa-check"></i></button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Move livestock to Eastern grazing area</td>
+                                            <td><span class="badge bg-warning">Medium</span></td>
+                                            <td>May 15, 2025</td>
+                                            <td><span class="badge bg-info">Scheduled</span></td>
+                                            <td>
+                                                <button class="btn btn-sm btn-outline-primary me-1"><i class="fas fa-edit"></i></button>
+                                                <button class="btn btn-sm btn-outline-success"><i class="fas fa-check"></i></button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Vaccination for sheep</td>
+                                            <td><span class="badge bg-warning">Medium</span></td>
+                                            <td>May 18, 2025</td>
+                                            <td><span class="badge bg-info">Scheduled</span></td>
+                                            <td>
+                                                <button class="btn btn-sm btn-outline-primary me-1"><i class="fas fa-edit"></i></button>
+                                                <button class="btn btn-sm btn-outline-success"><i class="fas fa-check"></i></button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Marketplace listing update</td>
+                                            <td><span class="badge bg-success">Low</span></td>
+                                            <td>May 20, 2025</td>
+                                            <td><span class="badge bg-secondary">Not Started</span></td>
+                                            <td>
+                                                <button class="btn btn-sm btn-outline-primary me-1"><i class="fas fa-edit"></i></button>
+                                                <button class="btn btn-sm btn-outline-success"><i class="fas fa-check"></i></button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS Bundle with Popper -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Leaflet Map CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css" />
+    
+    <!-- Leaflet Map JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+    
+    <!-- Main JavaScript -->
+    <script>
+        // Toggle Sidebar
+        document.getElementById('toggle-sidebar').addEventListener('click', function() {
+            document.getElementById('sidebar').classList.toggle('collapsed');
+            document.getElementById('main-content').classList.toggle('expanded');
+            
+            const icon = this.querySelector('i');
+            if (icon.classList.contains('fa-chevron-left')) {
+                icon.classList.remove('fa-chevron-left');
+                icon.classList.add('fa-chevron-right');
+            } else {
+                icon.classList.remove('fa-chevron-right');
+                icon.classList.add('fa-chevron-left');
+            }
+        });
+        
+        // Initialize Livestock Tracking Map
+        document.addEventListener('DOMContentLoaded', function() {
+            // Create map centered on Nigeria
+            const map = L.map('livestockMap').setView([9.0820, 8.6753], 7);
+            
+            // Add OpenStreetMap tile layer
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+                maxZoom: 18
+            }).addTo(map);
+            
+            // Custom icons for livestock with different health statuses
+            const normalIcon = L.divIcon({
+                className: 'custom-div-icon',
+                html: '<div style="background-color: #28a745; width: 15px; height: 15px; border-radius: 50%; position: relative;" class="pulse-animation"><i class="fas fa-cow" style="color: white; font-size: 10px; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);"></i></div>',
+                iconSize: [15, 15],
+                iconAnchor: [7, 7]
+            });
+            
+            const warningIcon = L.divIcon({
+                className: 'custom-div-icon',
+                html: '<div style="background-color: #ffc107; width: 15px; height: 15px; border-radius: 50%; position: relative;"><i class="fas fa-cow" style="color: white; font-size: 10px; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);"></i></div>',
+                iconSize: [15, 15],
+                iconAnchor: [7, 7]
+            });
+            
+            const criticalIcon = L.divIcon({
+                className: 'custom-div-icon',
+                html: '<div style="background-color: #dc3545; width: 15px; height: 15px; border-radius: 50%; position: relative;" class="pulse-animation"><i class="fas fa-cow" style="color: white; font-size: 10px; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);"></i></div>',
+                iconSize: [15, 15],
+                iconAnchor: [7, 7]
+            });
+            
+            // Sample livestock data for Nigeria (Kaduna area)
+            const livestockData = [
+                // Normal cattle in central Kaduna
+                { location: [10.5233, 7.4385], type: 'cattle', health: 'normal', count: 15, id: '1001-1015' },
+                { location: [10.5433, 7.4585], type: 'cattle', health: 'normal', count: 12, id: '1016-1027' },
+                { location: [10.5133, 7.4185], type: 'cattle', health: 'normal', count: 18, id: '1028-1045' },
+                
+                // Normal goats
+                { location: [10.5053, 7.4420], type: 'goat', health: 'normal', count: 8, id: '2001-2008' },
+                { location: [10.5353, 7.4720], type: 'goat', health: 'normal', count: 12, id: '2009-2020' },
+                
+                // Normal sheep
+                { location: [10.5153, 7.4220], type: 'sheep', health: 'normal', count: 10, id: '3001-3010' },
+                
+                // Warning cattle
+                { location: [10.5633, 7.4785], type: 'cattle', health: 'warning', count: 3, id: '1046-1048' },
+                
+                // Warning goats
+                { location: [10.5253, 7.4420], type: 'goat', health: 'warning', count: 2, id: '2021-2022' },
+                
+                // Critical cattle - isolated from main herd
+                { location: [10.6133, 7.5185], type: 'cattle', health: 'critical', count: 1, id: '1049' },
+                { location: [10.4833, 7.3985], type: 'cattle', health: 'critical', count: 2, id: '1050-1051' }
+            ];
+            
+            // Add livestock markers to map
+            livestockData.forEach(animal => {
+                let icon;
+                if (animal.health === 'normal') {
+                    icon = normalIcon;
+                } else if (animal.health === 'warning') {
+                    icon = warningIcon;
+                } else {
+                    icon = criticalIcon;
+                }
+                
+                const marker = L.marker(animal.location, { icon: icon }).addTo(map);
+                marker.bindPopup(`
+                    <strong>${animal.count} ${animal.type}(s)</strong><br>
+                    ID: ${animal.id}<br>
+                    Status: <span class="text-${animal.health === 'normal' ? 'success' : animal.health === 'warning' ? 'warning' : 'danger'}">${animal.health}</span>
+                    ${animal.health !== 'normal' ? '<br><button class="btn btn-sm btn-danger mt-2">Check Now</button>' : ''}
+                `);
+            });
+            
+            // Add a grazing route example
+            const grazingRoute = [
+                [10.5233, 7.4385],
+                [10.5333, 7.4485],
+                [10.5433, 7.4585],
+                [10.5533, 7.4685],
+                [10.5633, 7.4785]
+            ];
+            
+            const routeLine = L.polyline(grazingRoute, {
+                color: '#FF8C00',
+                weight: 4,
+                opacity: 0.7,
+                dashArray: '10, 10'
+            }).addTo(map);
+            
+            routeLine.bindPopup("Today's planned grazing route");
+            
+            // Add a restricted area example
+            const restrictedArea = [
+                [10.5833, 7.4985],
+                [10.5933, 7.5085],
+                [10.6033, 7.4985],
+                [10.5933, 7.4885],
+                [10.5833, 7.4985]
+            ];
+            
+            L.polygon(restrictedArea, {
+                color: '#dc3545',
+                fillColor: '#dc3545',
+                fillOpacity: 0.3
+            }).addTo(map).bindPopup("Restricted Area: Private Farmland");
+            
+            // Add a water source example
+            const waterIcon = L.divIcon({
+                className: 'custom-div-icon',
+                html: '<div style="color: #00BFFF; font-size: 16px;"><i class="fas fa-water"></i></div>',
+                iconSize: [20, 20],
+                iconAnchor: [10, 10]
+            });
+            
+            L.marker([10.5433, 7.4385], { icon: waterIcon }).addTo(map)
+                .bindPopup("Water Source: River");
+        });
+
+        // Health Monitoring Chart
+        const healthCtx = document.getElementById('healthChart').getContext('2d');
+        const healthChart = new Chart(healthCtx, {
+            type: 'line',
+            data: {
+                labels: ['May 5', 'May 6', 'May 7', 'May 8', 'May 9', 'May 10', 'May 11'],
+                datasets: [{
+                    label: 'Average Temperature (°C)',
+                    data: [38.2, 38.1, 38.3, 38.5, 38.2, 38.0, 38.1],
+                    borderColor: '#FF8C00',
+                    backgroundColor: 'rgba(255, 140, 0, 0.1)',
+                    borderWidth: 2,
+                    tension: 0.3,
+                    fill: true
+                }, {
+                    label: 'Average Heart Rate (bpm)',
+                    data: [72, 70, 73, 75, 71, 69, 70],
+                    borderColor: '#00BFFF',
+                    backgroundColor: 'rgba(0, 191, 255, 0.1)',
+                    borderWidth: 2,
+                    tension: 0.3,
+                    fill: true,
+                    yAxisID: 'y1'
+                }]
+            },
+            options: {
+                responsive: true,
+                interaction: {
+                    mode: 'index',
+                    intersect: false,
+                },
+                scales: {
+                    y: {
+                        beginAtZero: false,
+                        min: 37,
+                        max: 40,
+                        title: {
+                            display: true,
+                            text: 'Temperature (°C)'
+                        }
+                    },
+                    y1: {
+                        beginAtZero: false,
+                        min: 60,
+                        max: 90,
+                        position: 'right',
+                        grid: {
+                            drawOnChartArea: false,
+                        },
+                        title: {
+                            display: true,
+                            text: 'Heart Rate (bpm)'
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    }
+                }
+            }
+        });
+
+        // Age Distribution Chart
+        const ageCtx = document.getElementById('ageDistributionChart').getContext('2d');
+        const ageChart = new Chart(ageCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['0-1 Year', '1-3 Years', '3-5 Years', '5+ Years'],
+                datasets: [{
+                    data: [15, 45, 30, 10],
+                    backgroundColor: [
+                        '#FF8C00',
+                        '#00BFFF',
+                        '#28a745',
+                        '#6c757d'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
