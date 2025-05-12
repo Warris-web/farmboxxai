@@ -1,0 +1,2 @@
+# farmboxxai
+Livestock meet AI
