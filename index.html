@@ -1,0 +1,827 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FarmBoxx AI | Smart Livestock Management</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <meta name="description" content="FarmBoxx AI - Livestock Management Dashboard">
+    <meta name="keywords" content="FarmBoxx, AI, Livestock, Management, Dashboard">
+    <meta name="author" content="Ibrahim Warris">
+    <link rel="icon" type="image/x-icon" href="/asset/img/farmlogo1.png">
+  <style>
+    :root {
+      --primary: #FF8C00;
+      --secondary: #00BFFF;
+      --dark: #000000;
+      --light: #f8f9fa;
+      --white: #ffffff;
+    }
+    
+    body {
+      font-family: 'Poppins', sans-serif;
+      overflow-x: hidden;
+    }
+    
+    .bg-primary-custom {
+      background-color: var(--primary);
+    }
+    
+    .bg-secondary-custom {
+      background-color: var(--secondary);
+    }
+    
+    .bg-dark-custom {
+      background-color: var(--dark);
+    }
+    
+    .text-primary-custom {
+      color: var(--primary);
+    }
+    
+    .text-secondary-custom {
+      color: var(--secondary);
+    }
+    
+    .btn-primary-custom {
+      background-color: var(--primary);
+      border: none;
+      color: white;
+      transition: all 0.3s ease;
+    }
+    
+    .btn-primary-custom:hover {
+      background-color: #e67e00;
+      transform: translateY(-3px);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    }
+    
+    .btn-secondary-custom {
+      background-color: var(--secondary);
+      border: none;
+      color: white;
+      transition: all 0.3s ease;
+    }
+    
+    .btn-secondary-custom:hover {
+      background-color: #00a8e0;
+      transform: translateY(-3px);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    }
+    
+    .navbar {
+      transition: all 0.4s ease;
+      padding: 1rem 2rem;
+    }
+    
+    .navbar.scrolled {
+      background-color: var(--white) !important;
+      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+      padding: 0.5rem 2rem;
+    }
+    
+    .navbar-brand {
+      font-weight: 700;
+      font-size: 1.8rem;
+    }
+    
+    .nav-link {
+      font-weight: 500;
+      margin: 0 10px;
+      position: relative;
+      transition: all 0.3s ease;
+    }
+    
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      width: 0;
+      height: 2px;
+      background: var(--primary);
+      bottom: 0;
+      left: 0;
+      transition: width 0.3s ease;
+    }
+    
+    .nav-link:hover::after {
+      width: 100%;
+    }
+    
+    .hero {
+      min-height: 100vh;
+      background: linear-gradient(135deg, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.6)), url('./asset/img/img01.webp') center/cover no-repeat;
+      display: flex;
+      align-items: center;
+      position: relative;
+    }
+    
+    .hero-content {
+      padding: 4rem 0;
+    }
+    
+    .hero-title {
+      font-size: 3.5rem;
+      font-weight: 700;
+      margin-bottom: 1.5rem;
+    }
+    
+    .hero-subtitle {
+      font-size: 1.5rem;
+      font-weight: 400;
+      margin-bottom: 2rem;
+    }
+    
+    .features-icon {
+      font-size: 3rem;
+      margin-bottom: 1.5rem;
+      transition: all 0.3s ease;
+    }
+    
+    .feature-card {
+      padding: 2rem;
+      border-radius: 1rem;
+      transition: all 0.3s ease;
+      height: 100%;
+      overflow: hidden;
+    }
+    
+    .feature-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+    }
+    
+    .feature-card:hover .features-icon {
+      transform: scale(1.2);
+      color: var(--primary);
+    }
+    
+    .how-it-works {
+      position: relative;
+      padding: 6rem 0;
+      background-color: var(--light);
+    }
+    
+    .section-title {
+      position: relative;
+      margin-bottom: 3rem;
+      padding-bottom: 1rem;
+    }
+    
+    .section-title::after {
+      content: '';
+      position: absolute;
+      width: 80px;
+      height: 3px;
+      background: var(--primary);
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+    .white{
+        color: #fff;
+    }
+    
+    .step-card {
+      background: var(--white);
+      border-radius: 1rem;
+      padding: 2rem;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+      position: relative;
+      transition: all 0.3s ease;
+      height: 100%;
+    }
+    
+    .step-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+    }
+    
+    .step-number {
+      position: absolute;
+      top: -15px;
+      left: -15px;
+      background: var(--primary);
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--white);
+      font-weight: 700;
+      font-size: 1.5rem;
+    }
+    
+    .testimonial-card {
+      background: var(--white);
+      border-radius: 1rem;
+      padding: 2rem;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+      margin: 1rem;
+      transition: all 0.3s ease;
+    }
+    
+    .testimonial-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+    }
+    
+    .testimonial-img {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-bottom: 1rem;
+    }
+    
+    .cta {
+      background: linear-gradient(135deg, var(--primary), #ffb347);
+      padding: 6rem 0;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .cta::before {
+      content: '';
+      position: absolute;
+      width: 300px;
+      height: 300px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 50%;
+      top: -150px;
+      right: -150px;
+    }
+    
+    .cta::after {
+      content: '';
+      position: absolute;
+      width: 200px;
+      height: 200px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 50%;
+      bottom: -100px;
+      left: -100px;
+    }
+    
+    footer {
+      background-color: var(--dark);
+      color: var(--white);
+      padding: 4rem 0 2rem;
+    }
+    
+    .footer-heading {
+      font-size: 1.5rem;
+      font-weight: 600;
+      margin-bottom: 1.5rem;
+      position: relative;
+      padding-bottom: 10px;
+    }
+    
+    .footer-heading::after {
+      content: '';
+      position: absolute;
+      width: 50px;
+      height: 2px;
+      background: var(--primary);
+      bottom: 0;
+      left: 0;
+    }
+    
+    .footer-link {
+      color: #adb5bd;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      display: block;
+      margin-bottom: 0.8rem;
+    }
+    
+    .footer-link:hover {
+      color: var(--primary);
+      transform: translateX(5px);
+    }
+    
+    .social-icon {
+      color: var(--white);
+      background: rgba(255, 255, 255, 0.1);
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      margin-right: 10px;
+      transition: all 0.3s ease;
+    }
+    
+    .social-icon:hover {
+      background: var(--primary);
+      transform: translateY(-5px);
+    }
+    
+    .copyright {
+      padding-top: 2rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      margin-top: 3rem;
+    }
+    
+    /* Animations */
+    .fade-up {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: all 0.8s ease;
+    }
+    
+    .fade-up.active {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    
+    .staggered {
+      transition-delay: calc(var(--i) * 0.1s);
+    }
+    
+    .floating {
+      animation: floating 3s ease-in-out infinite;
+    }
+    
+    @keyframes floating {
+      0% {
+        transform: translateY(0);
+      }
+      50% {
+        transform: translateY(-15px);
+      }
+      100% {
+        transform: translateY(0);
+      }
+    }
+    
+    @media (max-width: 992px) {
+      .hero-title {
+        font-size: 2.5rem;
+      }
+      
+      .hero-subtitle {
+        font-size: 1.2rem;
+      }
+    }
+    
+    @media (max-width: 768px) {
+      .navbar {
+        padding: 0.5rem 1rem;
+      }
+      
+      .hero-title {
+        font-size: 2rem;
+      }
+      
+      .hero-subtitle {
+        font-size: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-light fixed-top">
+    <div class="container">
+      <a class="navbar-brand d-flex align-items-center" href="index.html">
+        <img src="asset/img/farmlogo1.png" alt="FarmBoxx" style="width:40%">
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="#home">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#features">Features</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#how-it-works">How It Works</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#testimonials">Success Stories</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link btn btn-primary-custom px-4 rounded-pill" href="auth/sign-in.html">Get Started</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="hero" id="home">
+    <div class="container">
+      <div class="row align-items-center">
+        <div class="col-lg-6 hero-content">
+          <h1 class="hero-title text-white fade-up" style="--i:1;">
+            Transforming Livestock Farming with AI
+          </h1>
+          <p class="hero-subtitle text-white-50 fade-up" style="--i:2;">
+            Smart livestock management for Nigerian farmers - monitor health, optimize grazing, access veterinary care, and connect directly to buyers.
+          </p>
+          <div class="d-flex flex-wrap gap-3 fade-up" style="--i:3;">
+            <a href="auth/sign-in.html" class="btn btn-primary-custom btn-lg px-4 rounded-pill">Get Started</a>
+            <a href="#features" class="btn btn-outline-light btn-lg px-4 rounded-pill">Learn More</a>
+          </div>
+        </div>
+        <div class="col-lg-6 d-flex justify-content-center mt-5 mt-lg-0">
+          <div class="position-relative floating fade-up" style="--i:4;">
+            <img src="asset/img/hme1.jpg"FarmBoxx AI Dashboard" class="img-fluid rounded-4 shadow-lg">
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features Section -->
+  <section class="py-5 py-md-6" id="features">
+    <div class="container py-5">
+      <div class="text-center mb-5">
+        <h6 class="text-primary-custom fw-bold fade-up">OUR FEATURES</h6>
+        <h2 class="section-title fade-up">Why Choose FarmBoxx AI</h2>
+        <p class="lead mb-0 fade-up">Comprehensive tools built specifically for Nigerian livestock farmers</p>
+      </div>
+      
+      <div class="row g-4">
+        <!-- Feature 1 -->
+        <div class="col-md-6 col-lg-4 fade-up staggered" style="--i:1;">
+          <div class="feature-card bg-white shadow-sm">
+            <div class="features-icon text-primary-custom">
+              <i class="fas fa-heartbeat"></i>
+            </div>
+            <h4>Health Monitoring</h4>
+            <p>Track vital signs of your livestock with affordable IoT sensors and receive AI-powered early warnings for potential diseases.</p>
+          </div>
+        </div>
+        
+        <!-- Feature 2 -->
+        <div class="col-md-6 col-lg-4 fade-up staggered" style="--i:2;">
+          <div class="feature-card bg-white shadow-sm">
+            <div class="features-icon text-primary-custom">
+              <i class="fas fa-map-marked-alt"></i>
+            </div>
+            <h4>Grazing Optimization</h4>
+            <p>Use GIS-enabled route planning to map safe, optimized grazing paths, reducing land pressure and minimizing conflicts.</p>
+          </div>
+        </div>
+        
+        <!-- Feature 3 -->
+        <div class="col-md-6 col-lg-4 fade-up staggered" style="--i:3;">
+          <div class="feature-card bg-white shadow-sm">
+            <div class="features-icon text-primary-custom">
+              <i class="fas fa-user-md"></i>
+            </div>
+            <h4>Veterinary Support</h4>
+            <p>Connect instantly with certified veterinary professionals for virtual consultations, even in low-connectivity areas via USSD.</p>
+          </div>
+        </div>
+        
+        <!-- Feature 4 -->
+        <div class="col-md-6 col-lg-4 fade-up staggered" style="--i:4;">
+          <div class="feature-card bg-white shadow-sm">
+            <div class="features-icon text-primary-custom">
+              <i class="fas fa-store"></i>
+            </div>
+            <h4>Digital Marketplace</h4>
+            <p>Sell your livestock directly to verified buyers and processors, bypassing middlemen for better prices.</p>
+          </div>
+        </div>
+        
+        <!-- Feature 5 -->
+        <div class="col-md-6 col-lg-4 fade-up staggered" style="--i:5;">
+          <div class="feature-card bg-white shadow-sm">
+            <div class="features-icon text-primary-custom">
+              <i class="fas fa-truck"></i>
+            </div>
+            <h4>Logistics & Traceability</h4>
+            <p>Track livestock movement with blockchain technology for secure transport and verified transactions.</p>
+          </div>
+        </div>
+        
+        <!-- Feature 6 -->
+        <div class="col-md-6 col-lg-4 fade-up staggered" style="--i:6;">
+          <div class="feature-card bg-white shadow-sm">
+            <div class="features-icon text-primary-custom">
+              <i class="fas fa-mobile-alt"></i>
+            </div>
+            <h4>Offline-First Design</h4>
+            <p>Access via smartphone, feature phone, or USSD, ensuring every farmer can use the platform regardless of digital literacy.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- How It Works Section -->
+  <section class="how-it-works" id="how-it-works">
+    <div class="container py-5">
+      <div class="text-center mb-5">
+        <h6 class="text-primary-custom fw-bold fade-up">PROCESS</h6>
+        <h2 class="section-title fade-up">How FarmBoxx AI Works</h2>
+        <p class="lead mb-0 fade-up">Simple steps to transform your livestock management</p>
+      </div>
+      
+      <div class="row g-4">
+        <!-- Step 1 -->
+        <div class="col-md-6 col-lg-3 fade-up staggered" style="--i:1;">
+          <div class="step-card">
+            <div class="step-number">1</div>
+            <div class="text-center mb-4">
+              <div class="features-icon text-secondary-custom">
+                <i class="fas fa-sign-in-alt"></i>
+              </div>
+            </div>
+            <h5 class="text-center">Register & Setup</h5>
+            <p class="text-center">Sign up using your mobile phone and set up your farm profile with your livestock details.</p>
+          </div>
+        </div>
+        
+        <!-- Step 2 -->
+        <div class="col-md-6 col-lg-3 fade-up staggered" style="--i:2;">
+          <div class="step-card">
+            <div class="step-number">2</div>
+            <div class="text-center mb-4">
+              <div class="features-icon text-secondary-custom">
+                <i class="fas fa-satellite-dish"></i>
+              </div>
+            </div>
+            <h5 class="text-center">Connect Sensors</h5>
+            <p class="text-center">Attach low-cost IoT sensors to your livestock to monitor health and track location.</p>
+          </div>
+        </div>
+        
+        <!-- Step 3 -->
+        <div class="col-md-6 col-lg-3 fade-up staggered" style="--i:3;">
+          <div class="step-card">
+            <div class="step-number">3</div>
+            <div class="text-center mb-4">
+              <div class="features-icon text-secondary-custom">
+                <i class="fas fa-chart-line"></i>
+              </div>
+            </div>
+            <h5 class="text-center">Monitor & Manage</h5>
+            <p class="text-center">Access real-time insights into livestock health, location, and market prices.</p>
+          </div>
+        </div>
+        
+        <!-- Step 4 -->
+        <div class="col-md-6 col-lg-3 fade-up staggered" style="--i:4;">
+          <div class="step-card">
+            <div class="step-number">4</div>
+            <div class="text-center mb-4">
+              <div class="features-icon text-secondary-custom">
+                <i class="fas fa-handshake"></i>
+              </div>
+            </div>
+            <h5 class="text-center">Sell & Profit</h5>
+            <p class="text-center">List your livestock on the marketplace and connect directly with buyers for better prices.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Testimonials Section -->
+  <!-- <section class="py-5 py-md-6 bg-light" id="testimonials">
+    <div class="container py-5">
+      <div class="text-center mb-5">
+        <h6 class="text-primary-custom fw-bold fade-up">SUCCESS STORIES</h6>
+        <h2 class="section-title fade-up">Farmers Transforming Their Lives</h2>
+        <p class="lead mb-0 fade-up">Hear from livestock farmers across Nigeria who have adopted FarmBoxx AI</p>
+      </div>
+      
+      <div class="row g-4"> -->
+        <!-- Testimonial 1 -->
+        <!-- <div class="col-md-6 col-lg-4 fade-up staggered" style="--i:1;">
+          <div class="testimonial-card">
+            <div class="d-flex align-items-center mb-4">
+              <img src="/api/placeholder/80/80" alt="Musa" class="testimonial-img">
+              <div class="ms-3">
+                <h5 class="mb-0">Musa Ibrahim</h5>
+                <small class="text-muted">Kaduna, Northern Nigeria</small>
+              </div>
+            </div>
+            <p class="mb-3">"Before FarmBoxx AI, I lost seven cattle last year to disease. This season, the early warning system alerted me to signs of illness in two cows, and I got them treated in time. My herd is healthier than ever."</p>
+            <div class="text-warning">
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+            </div>
+          </div>
+        </div> -->
+        
+        <!-- Testimonial 2 -->
+        <!-- <div class="col-md-6 col-lg-4 fade-up staggered" style="--i:2;">
+          <div class="testimonial-card">
+            <div class="d-flex align-items-center mb-4">
+              <img src="/api/placeholder/80/80" alt="Amaka" class="testimonial-img">
+              <div class="ms-3">
+                <h5 class="mb-0">Amaka Obi</h5>
+                <small class="text-muted">Ogun State, Southern Nigeria</small>
+              </div>
+            </div>
+            <p class="mb-3">"The marketplace feature has changed everything! Instead of selling my goats to local middlemen for whatever price they offer, I can now reach buyers from Lagos who pay 30% more. My income has doubled."</p>
+            <div class="text-warning">
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+            </div>
+          </div>
+        </div> -->
+        
+        <!-- Testimonial 3 -->
+        <!-- <div class="col-md-6 col-lg-4 fade-up staggered" style="--i:3;">
+          <div class="testimonial-card">
+            <div class="d-flex align-items-center mb-4">
+              <img src="/api/placeholder/80/80" alt="Ibrahim" class="testimonial-img">
+              <div class="ms-3">
+                <h5 class="mb-0">Ibrahim Abubakar</h5>
+                <small class="text-muted">Sokoto, Northern Nigeria</small>
+              </div>
+            </div>
+            <p class="mb-3">"The grazing route planner has prevented conflicts with local farmers. Now I know which areas to avoid, and my cattle are safer. The veterinary support has been a blessing when we're far from towns."</p>
+            <div class="text-warning">
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star-half-alt"></i>
+            </div>
+          </div>
+        </div> -->
+      <!-- </div>
+    </div>
+  </section> -->
+
+  <!-- CTA Section -->
+  <section class="cta" id="contact">
+    <div class="container py-5">
+      <div class="row justify-content-center">
+        <div class="col-lg-8 text-center">
+          <h2 class="text-white mb-4 fade-up">Ready to Transform Your Livestock Business?</h2>
+          <p class="text-white-50 mb-5 fade-up">Join thousands of Nigerian farmers who are already using FarmBoxx AI to monitor health, optimize grazing, access veterinary care, and sell directly to buyers.</p>
+          <div class="fade-up">
+            <form class="row g-3 justify-content-center">
+              <div class="col-md-8">
+                <input type="text" class="form-control form-control-lg rounded-pill" placeholder="Enter your phone number">
+              </div>
+              <div class="col-md-4">
+                <button class="btn btn-dark w-100 btn-lg rounded-pill">Get Started</button>
+              </div>
+            </form>
+            <p class="text-white-50 mt-3 small">You'll receive an SMS with instructions to download or access FarmBoxx AI</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <div class="row g-4">
+        <!-- Brand -->
+        <div class="col-lg-4 mb-4 mb-lg-0">
+          <a class="d-inline-block mb-4" href="index.html" style="margin-bottom: 0px !important;">
+            <!-- <h3 class="mb-0"><span class="text-primary-custom">Farm</span><span class="text-secondary-custom">Boxx</span> AI</h3> -->
+             <h3 class="mb-0">
+                <img src="asset/img/farmlogo1.png" alt="FarmBoxx" style="width:40%">
+            </h3>
+          </a>
+          <p class="white">Transforming livestock management in Nigeria with AI-powered solutions for health monitoring, grazing optimization, veterinary support, and market access.</p>
+          <div class="mt-4">
+            <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+            <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+            <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+            <a href="#" class="social-icon"><i class="fab fa-linkedin-in"></i></a>
+          </div>
+        </div>
+        
+        <!-- Quick Links -->
+        <div class="col-md-4 col-lg-2">
+          <h5 class="footer-heading">Quick Links</h5>
+          <a href="#home" class="footer-link">Home</a>
+          <a href="#features" class="footer-link">Features</a>
+          <a href="#how-it-works" class="footer-link">How It Works</a>
+          <a href="#testimonials" class="footer-link">Success Stories</a>
+          <a href="#contact" class="footer-link">Contact Us</a>
+        </div>
+        
+        <!-- Features -->
+        <div class="col-md-4 col-lg-2">
+          <h5 class="footer-heading">Features</h5>
+          <a href="#" class="footer-link">Health Monitoring</a>
+          <a href="#" class="footer-link">Grazing Optimization</a>
+          <a href="#" class="footer-link">Veterinary Support</a>
+          <a href="#" class="footer-link">Digital Marketplace</a>
+          <a href="#" class="footer-link">Logistics & Traceability</a>
+        </div>
+        
+        <!-- Contact -->
+        <div class="col-md-4 col-lg-4">
+          <h5 class="footer-heading">Contact Us</h5>
+          <p class="d-flex align-items-center mb-3">
+            <i class="fas fa-map-marker-alt me-3 text-primary-custom"></i>
+            <span>12, Lekki, Lagos, Nigeria</span>
+          </p>
+          <p class="d-flex align-items-center mb-3">
+            <i class="fas fa-phone-alt me-3 text-primary-custom"></i>
+            <span>+234 800 FARMBOXX</span>
+          </p>
+          <p class="d-flex align-items-center mb-3">
+            <i class="fas fa-envelope me-3 text-primary-custom"></i>
+            <span>info@farmboxxai.com</span>
+          </p>
+        </div>
+      </div>
+      
+      <div class="text-center copyright">
+        <p class="mb-0">&copy; 2025 FarmBoxx AI. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0-alpha1/js/bootstrap.bundle.min.js"></script>
+  <script>
+    // Navbar scroll effect
+    const navbar = document.querySelector('.navbar');
+    
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 50) {
+        navbar.classList.add('scrolled', 'navbar-light', 'bg-white');
+        navbar.classList.remove('navbar-dark');
+      } else {
+        navbar.classList.add('navbar-dark');
+        navbar.classList.remove('scrolled', 'navbar-light', 'bg-white');
+      }
+    });
+    
+    // Initial check for navbar
+    if (window.scrollY > 50) {
+      navbar.classList.add('scrolled', 'navbar-light', 'bg-white');
+      navbar.classList.remove('navbar-dark');
+    } else {
+      navbar.classList.add('navbar-dark');
+      navbar.classList.remove('navbar-light', 'bg-white');
+    }
+    
+    // Scroll animations
+    const fadeElements = document.querySelectorAll('.fade-up');
+    
+    const fadeInOptions = {
+      threshold: 0.1,
+      rootMargin: '0px 0px -100px 0px'
+    };
+    
+    const fadeInObserver = new IntersectionObserver(function(entries, fadeInObserver) {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('active');
+          fadeInObserver.unobserve(entry.target);
+        }
+      });
+    }, fadeInOptions);
+    
+    fadeElements.forEach(element => {
+      fadeInObserver.observe(element);
+    });
+    
+    // Smooth scrolling for anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function(e) {
+        e.preventDefault();
+        
+        const targetId = this.getAttribute('href');
+        
+        if (targetId === '#') return;
+        
+        const targetElement = document.querySelector(targetId);
+        
+        if (targetElement) {
+          window.scrollTo({
+            top: targetElement.offsetTop - 80,
+            behavior: 'smooth'
+          });
+          
+          // Close mobile menu if open
+          const navbarCollapse = document.querySelector('.navbar-collapse');
+          if (navbarCollapse.classList.contains('show')) {
+            document.querySelector('.navbar-toggler').click();
+          }
+        }
+      });
+    });
+  </script>

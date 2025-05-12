@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login | FarmBoxx AI</title>
+   <meta name="description" content="FarmBoxx AI - Livestock Management">
+    <meta name="keywords" content="FarmBoxx, AI, Livestock, Management">
+    <meta name="author" content="Ibrahim Warris">
+    <link rel="icon" type="image/x-icon" href="../asset/img/farmlogo1.png">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #FF8C00;
+      --secondary: #00BFFF;
+      --dark: #000000;
+      --light: #f8f9fa;
+      --white: #ffffff;
+    }
+    
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: var(--light);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .text-primary-custom {
+      color: var(--primary);
+    }
+    
+    .text-secondary-custom {
+      color: var(--secondary);
+    }
+    
+    .btn-primary-custom {
+      background-color: var(--primary);
+      border: none;
+      color: white;
+      transition: all 0.3s ease;
+    }
+    
+    .btn-primary-custom:hover {
+      background-color: #e67e00;
+      transform: translateY(-3px);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    }
+    
+    .btn-secondary-custom {
+      background-color: var(--secondary);
+      border: none;
+      color: white;
+      transition: all 0.3s ease;
+    }
+    
+    .btn-secondary-custom:hover {
+      background-color: #00a8e0;
+      transform: translateY(-3px);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    }
+    
+    .navbar {
+      padding: 1rem 2rem;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    }
+    
+    .navbar-brand {
+      font-weight: 700;
+      font-size: 1.8rem;
+    }
+    
+    .login-container {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+    }
+    
+    .login-card {
+      max-width: 400px;
+      width: 100%;
+      background: var(--white);
+      border-radius: 20px;
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+      padding: 2.5rem;
+      position: relative;
+      overflow: hidden;
+      animation: fadeIn 0.8s ease;
+    }
+    
+    .login-card::before {
+      content: '';
+      position: absolute;
+      top: -50px;
+      right: -50px;
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      background: rgba(255, 140, 0, 0.1);
+      z-index: 0;
+    }
+    
+    .login-card::after {
+      content: '';
+      position: absolute;
+      bottom: -50px;
+      left: -50px;
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      background: rgba(0, 191, 255, 0.1);
+      z-index: 0;
+    }
+    
+    .login-card .card-body {
+      position: relative;
+      z-index: 1;
+    }
+    
+    .login-header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+    
+    .login-logo {
+      margin-bottom: 1rem;
+      display: inline-block;
+    }
+    
+    .form-group {
+      margin-bottom: 1.5rem;
+      position: relative;
+    }
+    
+    .form-control {
+      height: 50px;
+      padding-left: 45px;
+      border-radius: 10px;
+      border: 1px solid #e1e1e1;
+      transition: all 0.3s ease;
+    }
+    
+    .form-control:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 0.2rem rgba(255, 140, 0, 0.25);
+    }
+    
+    .input-icon {
+      position: absolute;
+      left: 15px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #adb5bd;
+    }
+    
+    .password-toggle {
+      position: absolute;
+      right: 15px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #adb5bd;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    
+    .password-toggle:hover {
+      color: var(--primary);
+    }
+    
+    .form-check-input:checked {
+      background-color: var(--primary);
+      border-color: var(--primary);
+    }
+    
+    .divider {
+      display: flex;
+      align-items: center;
+      color: #adb5bd;
+      margin: 1.5rem 0;
+    }
+    
+    .divider::before,
+    .divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: #e1e1e1;
+    }
+    
+    .divider::before {
+      margin-right: 1rem;
+    }
+    
+    .divider::after {
+      margin-left: 1rem;
+    }
+    
+    .social-login {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+    
+    .social-btn {
+      width: 50px;
+      height: 50px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--white);
+      transition: all 0.3s ease;
+    }
+    
+    .social-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+    
+    .btn-facebook {
+      background-color: #3b5998;
+    }
+    
+    .btn-google {
+      background-color: #db4a39;
+    }
+    
+    .btn-whatsapp {
+      background-color: #25D366;
+    }
+    
+    .register-link {
+      text-align: center;
+      margin-top: 1.5rem;
+    }
+    
+    .register-link a {
+      color: var(--primary);
+      text-decoration: none;
+      font-weight: 600;
+      transition: all 0.3s ease;
+    }
+    
+    .register-link a:hover {
+      color: #e67e00;
+    }
+    
+    .support-options {
+      position: absolute;
+      bottom: 20px;
+      right: 20px;
+      display: flex;
+      gap: 15px;
+    }
+    
+    .support-option {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: var(--light);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #6c757d;
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+    
+    .support-option:hover {
+      background: var(--primary);
+      color: var(--white);
+      transform: translateY(-3px);
+    }
+    
+    .tooltip {
+      position: relative;
+    }
+    
+    .tooltip::after {
+      content: attr(data-tooltip);
+      position: absolute;
+      bottom: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--dark);
+      color: var(--white);
+      padding: 5px 10px;
+      border-radius: 5px;
+      font-size: 12px;
+      white-space: nowrap;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s ease;
+    }
+    
+    .tooltip:hover::after {
+      opacity: 1;
+      visibility: visible;
+      bottom: calc(100% + 10px);
+    }
+    
+    footer {
+      background-color: var(--white);
+      padding: 1rem 0;
+      text-align: center;
+      border-top: 1px solid #e1e1e1;
+    }
+    
+    .language-selector {
+      display: inline-flex;
+      align-items: center;
+      margin-left: 15px;
+      cursor: pointer;
+    }
+    
+    .language-selector select {
+      border: none;
+      background: transparent;
+      color: #6c757d;
+      font-size: 14px;
+      cursor: pointer;
+    }
+    
+    .flag-icon {
+      margin-right: 5px;
+      font-size: 18px;
+    }
+    
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    @media (max-width: 576px) {
+      .login-card {
+        padding: 2rem;
+        margin: 0 1rem;
+      }
+      
+      .navbar {
+        padding: 0.5rem 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-light bg-white">
+    <div class="container">
+      <a class="navbar-brand d-flex align-items-center" href="index.html">
+        <span class="text-primary-custom">Farm</span><span class="text-secondary-custom">Boxx</span> AI
+      </a>
+      <div class="language-selector">
+        <i class="flag-icon fas fa-globe text-secondary-custom"></i>
+        <select class="form-select-sm">
+          <option value="en">English</option>
+          <option value="ha">Hausa</option>
+          <option value="yo">Yoruba</option>
+          <option value="ig">Igbo</option>
+        </select>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Login Container -->
+  <div class="login-container">
+    <div class="login-card">
+      <div class="card-body">
+        <div class="login-header">
+          <div class="login-logo">
+            <h1><span class="text-primary-custom">Farm</span><span class="text-secondary-custom">Boxx</span> AI</h1>
+          </div>
+          <h4>Welcome Back!</h4>
+          <p class="text-muted">Login to manage your livestock</p>
+        </div>
+        
+        <form action="#" method="post">
+          <!-- Phone Number Input -->
+          <div class="form-group">
+            <i class="fas fa-phone input-icon"></i>
+            <input type="tel" class="form-control" id="phone" placeholder="Phone Number" required>
+          </div>
+          
+          <!-- Password Input -->
+          <div class="form-group">
+            <i class="fas fa-lock input-icon"></i>
+            <input type="password" class="form-control" id="password" placeholder="Password" required>
+            <i class="fas fa-eye password-toggle" id="passwordToggle"></i>
+          </div>
+          
+          <!-- Remember Me & Forgot Password -->
+          <div class="d-flex justify-content-between mb-4">
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" id="rememberMe">
+              <label class="form-check-label" for="rememberMe">Remember me</label>
+            </div>
+            <div>
+              <a href="#" class="text-secondary-custom text-decoration-none">Forgot password?</a>
+            </div>
+          </div>
+          
+          <!-- Login Button -->
+          <a href="../dashboard/index.html" class="btn btn-primary-custom w-100 py-2 rounded-pill">Login</a>
+        </form>
+        
+        <!-- Divider -->
+        <div class="divider">or continue with</div>
+        
+        <!-- Social Login -->
+        <div class="social-login">
+          <a href="#" class="social-btn btn-facebook">
+            <i class="fab fa-facebook-f"></i>
+          </a>
+          <a href="#" class="social-btn btn-google">
+            <i class="fab fa-google"></i>
+          </a>
+          <a href="#" class="social-btn btn-whatsapp">
+            <i class="fab fa-whatsapp"></i>
+          </a>
+        </div>
+        
+        <!-- Register Link -->
+        <div class="register-link">
+          <p>Don't have an account? <a href="#">Register</a></p>
+        </div>
+        
+        <!-- USSD Instructions -->
+        <div class="alert alert-light text-center mt-4" role="alert">
+          <small>No internet? Dial <strong>*347*123#</strong> to access FarmBoxx AI via USSD</small>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Support Options -->
+    <div class="support-options">
+      <div class="support-option tooltip" data-tooltip="Help Center">
+        <i class="fas fa-question"></i>
+      </div>
+      <div class="support-option tooltip" data-tooltip="Contact Support">
+        <i class="fas fa-headset"></i>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <div class="d-flex justify-content-between align-items-center">
+        <div>
+          <small class="text-muted">&copy; 2025 FarmBoxx AI. All rights reserved.</small>
+        </div>
+        <div>
+          <a href="#" class="text-muted text-decoration-none mx-2"><small>Privacy Policy</small></a>
+          <span class="text-muted">|</span>
+          <a href="#" class="text-muted text-decoration-none mx-2"><small>Terms of Service</small></a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0-alpha1/js/bootstrap.bundle.min.js"></script>
+  <script>
+    // Password visibility toggle
+    const passwordToggle = document.getElementById('passwordToggle');
+    const passwordInput = document.getElementById('password');
+    
+    passwordToggle.addEventListener('click', function() {
+      if (passwordInput.type === 'password') {
+        passwordInput.type = 'text';
+        passwordToggle.classList.remove('fa-eye');
+        passwordToggle.classList.add('fa-eye-slash');
+      } else {
+        passwordInput.type = 'password';
+        passwordToggle.classList.remove('fa-eye-slash');
+        passwordToggle.classList.add('fa-eye');
+      }
+    });
+    
+    // Form submission (prevent default for demo)
+    const loginForm = document.querySelector('form');
+    loginForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      // Show loading state
+      const submitBtn = this.querySelector('button[type="submit"]');
+      const originalText = submitBtn.innerHTML;
+      submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span> Logging in...';
+      submitBtn.disabled = true;
+      
+      // Simulate authentication process
+      setTimeout(() => {
+        // Redirect to dashboard (replace with actual redirect)
+        window.location.href = 'index.html';
+        
+        // Reset button state (if needed)
+        submitBtn.innerHTML = originalText;
+        submitBtn.disabled = false;
+      }, 2000);
+    });
+  </script>
+</body>
+</html>
