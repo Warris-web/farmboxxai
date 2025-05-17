@@ -1,0 +1,962 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FarmBoxx AI | Smart Livestock Management | Buy</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <meta name="description" content="FarmBoxx AI - Livestock Management Dashboard">
+    <meta name="keywords" content="FarmBoxx, AI, Livestock, Management, Dashboard">
+    <meta name="author" content="Ibrahim Warris">
+    <link rel="icon" type="image/x-icon" href="/asset/img/farmlogo1.png">
+    <style>
+        :root {
+            --primary-black: #000000;
+            --primary-orange: #FF8C00;
+            --primary-blue: #00BFFF;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f8f9fa;
+        }
+
+        /* Header Styles */
+        header {
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 15px 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .logo {
+            height: 50px;
+        }
+
+        .nav-link {
+            color: var(--primary-black);
+            font-weight: 500;
+            margin: 0 15px;
+            transition: color 0.3s ease;
+        }
+
+        .nav-link:hover {
+            color: var(--primary-orange);
+        }
+
+        .get-started-btn {
+            background-color: var(--primary-orange);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            padding: 10px 30px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .get-started-btn:hover {
+            background-color: #e67e00;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(255, 140, 0, 0.3);
+        }
+
+        /* Footer Styles */
+        footer {
+            background-color: var(--primary-black);
+            color: white;
+            padding: 60px 0 30px;
+        }
+
+        .footer-logo {
+            height: 45px;
+            margin-bottom: 20px;
+        }
+
+        .footer-description {
+            color: #b0b0b0;
+            margin-bottom: 25px;
+            line-height: 1.6;
+        }
+
+        .social-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: #1a1a1a;
+            color: white;
+            margin-right: 15px;
+            transition: all 0.3s ease;
+        }
+
+        .social-icon:hover {
+            background-color: var(--primary-blue);
+            transform: translateY(-3px);
+        }
+
+        .footer-title {
+            color: white;
+            font-size: 22px;
+            font-weight: 600;
+            margin-bottom: 25px;
+            position: relative;
+            padding-bottom: 10px;
+        }
+
+        .footer-title::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 50px;
+            height: 3px;
+            background-color: var(--primary-orange);
+        }
+
+        .footer-link {
+            display: block;
+            color: #b0b0b0;
+            margin-bottom: 15px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .footer-link:hover {
+            color: white;
+            transform: translateX(5px);
+        }
+
+        .contact-info {
+            color: #b0b0b0;
+            margin-bottom: 15px;
+        }
+
+        .contact-info i {
+            color: var(--primary-orange);
+            margin-right: 10px;
+            font-size: 18px;
+        }
+
+        .copyright {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 30px;
+            border-top: 1px solid #333;
+            color: #888;
+        }
+
+        /* Marketplace Styles */
+        .marketplace-section {
+            padding: 60px 0;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .section-title h2 {
+            font-size: 36px;
+            font-weight: 700;
+            color: var(--primary-black);
+            margin-bottom: 15px;
+        }
+
+        .section-title p {
+            color: #666;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .filter-tabs {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            background-color: white;
+            color: var(--primary-black);
+            border: 2px solid #eee;
+            border-radius: 50px;
+            padding: 10px 25px;
+            margin: 5px 10px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .filter-btn.active {
+            background-color: var(--primary-orange);
+            color: white;
+            border-color: var(--primary-orange);
+        }
+
+        .filter-btn:hover:not(.active) {
+            background-color: #f1f1f1;
+            transform: translateY(-2px);
+        }
+
+        .marketplace-card {
+            background-color: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            margin-bottom: 30px;
+            transition: all 0.4s ease;
+            height: 100%;
+        }
+
+        .marketplace-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .card-img-top {
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .card-body {
+            padding: 25px;
+        }
+
+        .card-title {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .seller-info {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .seller-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-right: 15px;
+        }
+
+        .seller-name {
+            font-size: 14px;
+            color: #666;
+        }
+
+        .location-badge {
+            display: inline-flex;
+            align-items: center;
+            background-color: #f8f9fa;
+            color: #666;
+            font-size: 12px;
+            padding: 5px 10px;
+            border-radius: 50px;
+            margin-bottom: 15px;
+        }
+
+        .location-badge i {
+            color: var(--primary-blue);
+            margin-right: 5px;
+        }
+
+        .animal-details {
+            margin-bottom: 15px;
+        }
+
+        .detail-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        .detail-item i {
+            color: var(--primary-orange);
+            margin-right: 10px;
+            width: 16px;
+        }
+
+        .price {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary-black);
+            margin-bottom: 20px;
+        }
+
+        .price span {
+            font-size: 14px;
+            color: #666;
+            font-weight: normal;
+        }
+
+        .card-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-blue);
+            border-color: var(--primary-blue);
+            flex: 1;
+            padding: 10px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            background-color: #009cd1;
+            transform: translateY(-2px);
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            border: 1px solid var(--primary-orange);
+            color: var(--primary-orange);
+            flex: 1;
+            padding: 10px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-outline:hover {
+            background-color: var(--primary-orange);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .health-badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background-color: #28a745;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .certified-badge {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            background-color: var(--primary-blue);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        /* Animation classes */
+        .fade-in {
+            animation: fadeIn 0.8s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .marketplace-card {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+
+        .marketplace-card.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Search and Filter Section */
+        .search-filter-section {
+            background-color: #f1f5f9;
+            padding: 30px 0;
+            margin-bottom: 30px;
+        }
+
+        .search-box {
+            position: relative;
+            margin-bottom: 20px;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 15px 20px;
+            padding-left: 50px;
+            border: none;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+        }
+
+        .search-box input:focus {
+            box-shadow: 0 5px 20px rgba(0, 191, 255, 0.2);
+            outline: none;
+        }
+
+        .search-box i {
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #888;
+        }
+
+        /* Responsiveness */
+        @media (max-width: 768px) {
+            .filter-tabs {
+                justify-content: flex-start;
+                overflow-x: auto;
+                padding-bottom: 15px;
+                margin-left: -10px;
+                margin-right: -10px;
+            }
+
+            .filter-btn {
+                flex-shrink: 0;
+            }
+
+            .section-title h2 {
+                font-size: 28px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-3 col-md-3 col-6">
+                    <a href="index.html">
+                        <img src="asset/img/farmlogo1.png" alt="FarmBoxx AI Logo" class="logo">
+                    </a>
+                </div>
+                <div class="col-lg-6 col-md-6 d-none d-md-block">
+                    <nav class="d-flex justify-content-center">
+                        <a href="#" class="nav-link">Home</a>
+                        <a href="#" class="nav-link">Features</a>
+                        <a href="#" class="nav-link">How It Works</a>
+                        <a href="#" class="nav-link">Success Stories</a>
+                    </nav>
+                </div>
+                <div class="col-lg-3 col-md-3 col-6 text-end">
+                    <button class="get-started-btn">Get Started</button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Marketplace Hero Section -->
+    <section class="bg-dark text-white py-5">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6 fade-in">
+                    <h1 class="display-4 fw-bold mb-4">FarmBoxx AI Marketplace</h1>
+                    <p class="lead mb-4">Connect directly with verified livestock sellers across Nigeria. Browse quality cattle, goats, sheep, and more with verified health records and transparent pricing.</p>
+                    <div class="d-flex gap-3">
+                        <button class="btn btn-lg get-started-btn">Find Livestock</button>
+                        <button class="btn btn-lg btn-outline-light">Sell Your Livestock</button>
+                    </div>
+                </div>
+                <div class="col-lg-6 mt-4 mt-lg-0 fade-in">
+                    <img src="asset/img/market.png" alt="Marketplace Hero Image" class="img-fluid rounded">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Search and Filters Section -->
+    <section class="search-filter-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 mx-auto">
+                    <div class="search-box">
+                        <i class="fas fa-search"></i>
+                        <input type="text" placeholder="Search for livestock by type, breed, location or seller name...">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Marketplace Section -->
+    <section class="marketplace-section">
+        <div class="container">
+            <div class="section-title fade-in">
+                <h2>Available Livestock</h2>
+                <p>Browse our wide selection of healthy, verified livestock from trusted sellers across Nigeria</p>
+            </div>
+
+            <!-- Filter Tabs -->
+            <div class="filter-tabs fade-in">
+                <button class="filter-btn active" data-filter="all">All Animals</button>
+                <button class="filter-btn" data-filter="cattle">Cattle</button>
+                <button class="filter-btn" data-filter="goat">Goats</button>
+                <button class="filter-btn" data-filter="sheep">Sheep</button>
+                <button class="filter-btn" data-filter="chicken">Chickens</button>
+                <button class="filter-btn" data-filter="pig">Pigs</button>
+            </div>
+
+            <!-- Marketplace Cards -->
+            <div class="row livestock-grid">
+                <!-- Cattle 1 -->
+                <div class="col-lg-4 col-md-6 marketplace-item cattle">
+                    <div class="marketplace-card position-relative">
+                        <div class="health-badge">Health: Excellent</div>
+                        <div class="certified-badge"><i class="fas fa-check-circle"></i> Verified</div>
+                        <img src="asset/img/cattle1.jpeg" class="card-img-top" alt="Cattle">
+                        <div class="card-body">
+                            <h5 class="card-title">Premium Sokoto Cattle</h5>
+                            <div class="seller-info">
+                                <img src="asset/img/card-image.png" alt="Seller" class="seller-avatar">
+                                <span class="seller-name">Musa Ibrahim</span>
+                            </div>
+                            <div class="location-badge">
+                                <i class="fas fa-map-marker-alt"></i> Kaduna State
+                            </div>
+                            <div class="animal-details">
+                                <div class="detail-item">
+                                    <i class="fas fa-weight"></i>
+                                    <span>Weight: 450kg</span>
+                                </div>
+                                <div class="detail-item">
+                                    <i class="fas fa-birthday-cake"></i>
+                                    <span>Age: 3 years</span>
+                                </div>
+                                <div class="detail-item">
+                                    <i class="fas fa-tag"></i>
+                                    <span>Breed: Red Bororo</span>
+                                </div>
+                            </div>
+                            <div class="price">
+                                ₦350,000 <span>/head</span>
+                            </div>
+                            <div class="card-buttons">
+                                <button class="btn btn-primary">Contact Seller</button>
+                                <button class="btn btn-outline">Details</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Goat 1 -->
+                <div class="col-lg-4 col-md-6 marketplace-item goat">
+                    <div class="marketplace-card position-relative">
+                        <div class="health-badge">Health: Good</div>
+                        <div class="certified-badge"><i class="fas fa-check-circle"></i> Verified</div>
+                        <img src="asset/img/goat.jpeg" class="card-img-top" alt="Goat">
+                        <div class="card-body">
+                            <h5 class="card-title">West African Dwarf Goat</h5>
+                            <div class="seller-info">
+                                <img src="asset/img/card-image.png" alt="Seller" class="seller-avatar">
+                                <span class="seller-name">Amaka Okonkwo</span>
+                            </div>
+                            <div class="location-badge">
+                                <i class="fas fa-map-marker-alt"></i> Ogun State
+                            </div>
+                            <div class="animal-details">
+                                <div class="detail-item">
+                                    <i class="fas fa-weight"></i>
+                                    <span>Weight: 25kg</span>
+                                </div>
+                                <div class="detail-item">
+                                    <i class="fas fa-birthday-cake"></i>
+                                    <span>Age: 1.5 years</span>
+                                </div>
+                                <div class="detail-item">
+                                    <i class="fas fa-tag"></i>
+                                    <span>Breed: WAD</span>
+                                </div>
+                            </div>
+                            <div class="price">
+                                ₦45,000 <span>/head</span>
+                            </div>
+                            <div class="card-buttons">
+                                <button class="btn btn-primary">Contact Seller</button>
+                                <button class="btn btn-outline">Details</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sheep 1 -->
+                <div class="col-lg-4 col-md-6 marketplace-item sheep">
+                    <div class="marketplace-card position-relative">
+                        <div class="health-badge">Health: Excellent</div>
+                        <div class="certified-badge"><i class="fas fa-check-circle"></i> Verified</div>
+                        <img src="asset/img/sheep.jpeg" class="card-img-top" alt="Sheep">
+                        <div class="card-body">
+                            <h5 class="card-title">Balami Sheep</h5>
+                            <div class="seller-info">
+                                <img src="asset/img/card-image.png" alt="Seller" class="seller-avatar">
+                                <span class="seller-name">Aliyu Mohammed</span>
+                            </div>
+                            <div class="location-badge">
+                                <i class="fas fa-map-marker-alt"></i> Kano State
+                            </div>
+                            <div class="animal-details">
+                                <div class="detail-item">
+                                    <i class="fas fa-weight"></i>
+                                    <span>Weight: 65kg</span>
+                                </div>
+                                <div class="detail-item">
+                                    <i class="fas fa-birthday-cake"></i>
+                                    <span>Age: 2 years</span>
+                                </div>
+                                <div class="detail-item">
+                                    <i class="fas fa-tag"></i>
+                                    <span>Breed: Balami</span>
+                                </div>
+                            </div>
+                            <div class="price">
+                                ₦85,000 <span>/head</span>
+                            </div>
+                            <div class="card-buttons">
+                                <button class="btn btn-primary">Contact Seller</button>
+                                <button class="btn btn-outline">Details</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Chicken 1 -->
+                <div class="col-lg-4 col-md-6 marketplace-item chicken">
+                    <div class="marketplace-card position-relative">
+                        <div class="health-badge">Health: Excellent</div>
+                        <div class="certified-badge"><i class="fas fa-check-circle"></i> Verified</div>
+                        <img src="asset/img/chicken.jpeg" class="card-img-top" alt="Chicken">
+                        <div class="card-body">
+                            <h5 class="card-title">Layer Chickens (50 Birds)</h5>
+                            <div class="seller-info">
+                                <img src="asset/img/card-image.png" alt="Seller" class="seller-avatar">
+                                <span class="seller-name">Funke Adebayo</span>
+                            </div>
+                            <div class="location-badge">
+                                <i class="fas fa-map-marker-alt"></i> Lagos State
+                            </div>
+                            <div class="animal-details">
+                                <div class="detail-item">
+                                    <i class="fas fa-weight"></i>
+                                    <span>Weight: 2kg/bird</span>
+                                </div>
+                                <div class="detail-item">
+                                    <i class="fas fa-birthday-cake"></i>
+                                    <span>Age: 5 months</span>
+                                </div>
+                                <div class="detail-item">
+                                    <i class="fas fa-tag"></i>
+                                    <span>Breed: ISA Brown</span>
+                                </div>
+                            </div>
+                            <div class="price">
+                                ₦120,000 <span>/50 birds</span>
+                            </div>
+                            <div class="card-buttons">
+                                <button class="btn btn-primary">Contact Seller</button>
+                                <button class="btn btn-outline">Details</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pig 1 -->
+                <div class="col-lg-4 col-md-6 marketplace-item pig">
+                    <div class="marketplace-card position-relative">
+                        <div class="health-badge">Health: Good</div>
+                        <div class="certified-badge"><i class="fas fa-check-circle"></i> Verified</div>
+                        <img src="asset/img/pig.jpeg" class="card-img-top" alt="Pig">
+                        <div class="card-body">
+                            <h5 class="card-title">Large White Pig</h5>
+                            <div class="seller-info">
+                                <img src="asset/img/card-image.png" alt="Seller" class="seller-avatar">
+                                <span class="seller-name">Chioma Eze</span>
+                            </div>
+                            <div class="location-badge">
+                                <i class="fas fa-map-marker-alt"></i> Abia State
+                            </div>
+                            <div class="animal-details">
+                                <div class="detail-item">
+                                    <i class="fas fa-weight"></i>
+                                    <span>Weight: 120kg</span>
+                                </div>
+                                <div class="detail-item">
+                                    <i class="fas fa-birthday-cake"></i>
+                                    <span>Age: 1 year</span>
+                                </div>
+                                <div class="detail-item">
+                                    <i class="fas fa-tag"></i>
+                                    <span>Breed: Large White</span>
+                                </div>
+                            </div>
+                            <div class="price">
+                                ₦95,000 <span>/head</span>
+                            </div>
+                            <div class="card-buttons">
+                                <button class="btn btn-primary">Contact Seller</button>
+                                <button class="btn btn-outline">Details</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Cattle 2 -->
+                <div class="col-lg-4 col-md-6 marketplace-item cattle">
+                    <div class="marketplace-card position-relative">
+                        <div class="health-badge">Health: Good</div>
+                        <div class="certified-badge"><i class="fas fa-check-circle"></i> Verified</div>
+                        <img src="asset/img/cattle2.jpeg" class="card-img-top" alt="Cattle">
+                        <div class="card-body">
+                            <h5 class="card-title">White Fulani Cattle</h5>
+                            <div class="seller-info">
+                                <img src="asset/img/card-image.png" alt="Seller" class="seller-avatar">
+                                <span class="seller-name">Ibrahim Danladi</span>
+                            </div>
+                            <div class="location-badge">
+                                <i class="fas fa-map-marker-alt"></i> Plateau State
+                            </div>
+                            <div class="animal-details">
+                                <div class="detail-item">
+                                    <i class="fas fa-weight"></i>
+                                    <span>Weight: 420kg</span>
+                                </div>
+                                <div class="detail-item">
+                                    <i class="fas fa-birthday-cake"></i>
+                                    <span>Age: 4 years</span>
+                                </div>
+                                <div class="detail-item">
+                                    <i class="fas fa-tag"></i>
+                                    <span>Breed: White Fulani</span>
+                                </div>
+                            </div>
+                            <div class="price">
+                                ₦320,000 <span>/head</span>
+                            </div>
+                            <div class="card-buttons">
+                                <button class="btn btn-primary">Contact Seller</button>
+                                <button class="btn btn-outline">Details</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Load More Button -->
+            <div class="text-center mt-5">
+                <button class="btn btn-lg btn-outline-dark px-5">Load More</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Marketplace Benefits Section -->
+    <section class="py-5 bg-light">
+        <div class="container">
+            <div class="section-title fade-in">
+                <h2>Why Choose FarmBoxx AI Marketplace</h2>
+                <p>We're revolutionizing livestock trading in Nigeria with technology and transparency</p>
+            </div>
+            <div class="row">
+                <div class="col-lg-4 col-md-6 mb-4 fade-in">
+                    <div class="card h-100 border-0 shadow-sm p-4">
+                        <div class="text-center mb-3">
+                            <i class="fas fa-heartbeat fa-3x" style="color: var(--primary-orange);"></i>
+                        </div>
+                        <h4 class="text-center mb-3">Verified Health Status</h4>
+                        <p class="text-center">All animals on our platform undergo health verification with real-time monitoring data from IoT sensors.</p>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6 mb-4 fade-in">
+                    <div class="card h-100 border-0 shadow-sm p-4">
+                        <div class="text-center mb-3">
+                            <i class="fas fa-user-check fa-3x" style="color: var(--primary-blue);"></i>
+                        </div>
+                        <h4 class="text-center mb-3">Trusted Sellers</h4>
+                        <p class="text-center">Every seller is verified and rated, ensuring you only deal with reliable livestock providers.</p>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6 mb-4 fade-in">
+                    <div class="card h-100 border-0 shadow-sm p-4">
+                        <div class="text-center mb-3">
+                            <i class="fas fa-truck fa-3x" style="color: var(--primary-orange);"></i>
+                        </div>
+                        <h4 class="text-center mb-3">Secure Transport</h4>
+                        <p class="text-center">Optional logistics services to ensure your livestock arrives safely to your location.</p>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6 mb-4 fade-in">
+                    <div class="card h-100 border-0 shadow-sm p-4">
+                        <div class="text-center mb-3">
+                            <i class="fas fa-shield-alt fa-3x" style="color: var(--primary-blue);"></i>
+                        </div>
+                        <h4 class="text-center mb-3">Secure Payments</h4>
+                        <p class="text-center">Our escrow system ensures your payment is only released when you're satisfied with your purchase.</p>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6 mb-4 fade-in">
+                    <div class="card h-100 border-0 shadow-sm p-4">
+                        <div class="text-center mb-3">
+                            <i class="fas fa-chart-line fa-3x" style="color: var(--primary-orange);"></i>
+                        </div>
+                        <h4 class="text-center mb-3">Fair Market Prices</h4>
+                        <p class="text-center">Transparent pricing with real-time market data helps both buyers and sellers get fair deals.</p>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6 mb-4 fade-in">
+                    <div class="card h-100 border-0 shadow-sm p-4">
+                        <div class="text-center mb-3">
+                            <i class="fas fa-stethoscope fa-3x" style="color: var(--primary-blue);"></i>
+                        </div>
+                        <h4 class="text-center mb-3">Veterinary Support</h4>
+                        <p class="text-center">Access to veterinary professionals for consultations before and after your purchase.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Call to Action Section -->
+    <section class="py-5" style="background-color: var(--primary-blue);">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-8 text-white fade-in">
+                    <h2 class="fw-bold mb-3">Ready to revolutionize your livestock business?</h2>
+                    <p class="lead mb-0">Join thousands of farmers across Nigeria who are buying and selling with confidence.</p>
+                </div>
+                <div class="col-lg-4 text-center text-lg-end fade-in">
+                    <button class="btn btn-lg" style="background-color: var(--primary-orange); color: white;">Register Now</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 mb-5 mb-lg-0">
+                    <img src="asset/img/farmlogo1.png" alt="FarmBoxx AI Logo" class="footer-logo">
+                    <p class="footer-description">Transforming livestock management in Nigeria with AI-powered solutions for health monitoring, grazing optimization, veterinary support, and market access.</p>
+                    <div class="social-icons">
+                        <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="social-icon"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-4 mb-5 mb-md-0">
+                    <h3 class="footer-title">Quick Links</h3>
+                    <a href="#" class="footer-link">Home</a>
+                    <a href="#" class="footer-link">Features</a>
+                    <a href="#" class="footer-link">How It Works</a>
+                    <a href="#" class="footer-link">Success Stories</a>
+                    <a href="#" class="footer-link">Contact Us</a>
+                </div>
+                <div class="col-lg-3 col-md-4 mb-5 mb-md-0">
+                    <h3 class="footer-title">Features</h3>
+                    <a href="#" class="footer-link">Health Monitoring</a>
+                    <a href="#" class="footer-link">Grazing Optimization</a>
+                    <a href="#" class="footer-link">Veterinary Support</a>
+                    <a href="#" class="footer-link">Digital Marketplace</a>
+                    <a href="#" class="footer-link">Logistics & Traceability</a>
+                </div>
+                <div class="col-lg-3 col-md-4">
+                    <h3 class="footer-title">Contact Us</h3>
+                    <div class="contact-info">
+                        <i class="fas fa-map-marker-alt"></i>
+                        12, Lekki, Lagos, Nigeria
+                    </div>
+                    <div class="contact-info">
+                        <i class="fas fa-phone-alt"></i>
+                        +234 800 FARMBOXX
+                    </div>
+                    <div class="contact-info">
+                        <i class="fas fa-envelope"></i>
+                        info@farmboxxai.com
+                    </div>
+                </div>
+            </div>
+            <div class="copyright">
+                &copy; 2025 FarmBoxx AI. All rights reserved.
+            </div>
+        </div>
+    <!-- JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script>
+        // Animation on scroll
+        document.addEventListener('DOMContentLoaded', function() {
+            // Show cards with staggered delay
+            const cards = document.querySelectorAll('.marketplace-card');
+            cards.forEach((card, index) => {
+                setTimeout(() => {
+                    card.classList.add('show');
+                }, 100 * index);
+            });
+
+            // Animate elements when they come into view
+            const fadeElements = document.querySelectorAll('.fade-in');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = 1;
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, {
+                threshold: 0.1
+            });
+
+            fadeElements.forEach(element => {
+                observer.observe(element);
+            });
+
+            // Filter functionality
+            const filterBtns = document.querySelectorAll('.filter-btn');
+            const items = document.querySelectorAll('.marketplace-item');
+
+            filterBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    // Remove active class from all buttons
+                    filterBtns.forEach(b => b.classList.remove('active'));
+                    // Add active class to clicked button
+                    btn.classList.add('active');
+
+                    // Get filter value
+                    const filterValue = btn.getAttribute('data-filter');
+
+                    // Show/hide items based on filter
+                    items.forEach(item => {
+                        if (filterValue === 'all' || item.classList.contains(filterValue)) {
+                            item.style.display = 'block';
+                            setTimeout(() => {
+                                item.querySelector('.marketplace-card').classList.add('show');
+                            }, 100);
+                        } else {
+                            item.style.display = 'none';
+                            item.querySelector('.marketplace-card').classList.remove('show');
+                        }
+                    });
+                });
+            });
+        });
+    </script>
+</body>
+</html>
+                
+               
+                

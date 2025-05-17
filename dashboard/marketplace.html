@@ -1,0 +1,1642 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FarmBoxx AI - Marketplace</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #FF8C00;
+            --secondary-color: #00BFFF;
+            --dark-color: #000000;
+            --light-color: #f8f9fa;
+            --success-color: #28a745;
+            --warning-color: #ffc107;
+            --danger-color: #dc3545;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f2f5;
+        }
+        
+        .sidebar {
+            background-color: var(--dark-color);
+            color: white;
+            height: 100vh;
+            position: fixed;
+            width: 240px;
+            transition: all 0.3s;
+            z-index: 100;
+        }
+        
+        .sidebar-header {
+            padding: 15px;
+            text-align: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .sidebar-header img {
+            max-width: 160px;
+        }
+        
+        .sidebar-menu {
+            padding: 0;
+            list-style: none;
+        }
+        
+        .sidebar-menu li {
+            margin: 2px 0;
+        }
+        
+        .sidebar-menu li a {
+            color: white;
+            text-decoration: none;
+            padding: 12px 20px;
+            display: flex;
+            align-items: center;
+            transition: all 0.3s;
+        }
+        
+        .sidebar-menu li a:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        .sidebar-menu li a.active {
+            background-color: var(--primary-color);
+        }
+        
+        .sidebar-menu li a i {
+            margin-right: 10px;
+            width: 20px;
+            text-align: center;
+        }
+        
+        .content-wrapper {
+            margin-left: 240px;
+            padding: 20px;
+            transition: all 0.3s;
+        }
+        
+        .navbar {
+            background-color: white;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+            padding: 10px 20px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+        }
+        
+        .card {
+            border: none;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            margin-bottom: 20px;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .btn-primary {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+        
+        .btn-primary:hover {
+            background-color: #e07e00;
+            border-color: #e07e00;
+        }
+        
+        .btn-secondary {
+            background-color: var(--secondary-color);
+            border-color: var(--secondary-color);
+        }
+        
+        .btn-secondary:hover {
+            background-color: #00a8e0;
+            border-color: #00a8e0;
+        }
+        
+        .badge-success {
+            background-color: var(--success-color);
+            color: white;
+        }
+        
+        .badge-warning {
+            background-color: var(--warning-color);
+            color: white;
+        }
+        
+        .badge-danger {
+            background-color: var(--danger-color);
+            color: white;
+        }
+        
+        .listing-card {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .listing-card .card-img-top {
+            height: 180px;
+            object-fit: cover;
+        }
+        
+        .listing-card .card-body {
+            flex: 1;
+        }
+        
+        .listing-tag {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 12px;
+        }
+        
+        .filter-btn {
+            margin-right: 5px;
+            margin-bottom: 5px;
+        }
+        
+        .search-bar {
+            position: relative;
+        }
+        
+        .search-bar input {
+            padding-left: 40px;
+            border-radius: 20px;
+        }
+        
+        .search-bar i {
+            position: absolute;
+            left: 15px;
+            top: 12px;
+            color: #999;
+        }
+        
+        .stats-card {
+            border-left: 4px solid;
+            background-color: white;
+            padding: 15px;
+            margin-bottom: 20px;
+            transition: transform 0.3s;
+        }
+        
+        .stats-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .stats-card.primary {
+            border-left-color: var(--primary-color);
+        }
+        
+        .stats-card.secondary {
+            border-left-color: var(--secondary-color);
+        }
+        
+        .stats-card.success {
+            border-left-color: var(--success-color);
+        }
+        
+        .stats-card h3 {
+            font-size: 24px;
+            margin-bottom: 5px;
+        }
+        
+        .stats-card p {
+            margin-bottom: 0;
+            color: #666;
+        }
+        
+        .market-activity {
+            height: 400px;
+            overflow-y: auto;
+        }
+        
+        .activity-item {
+            display: flex;
+            align-items: center;
+            padding: 15px 0;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .activity-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: #f0f2f5;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+        }
+        
+        .activity-icon.sale {
+            background-color: rgba(40, 167, 69, 0.1);
+            color: var(--success-color);
+        }
+        
+        .activity-icon.new {
+            background-color: rgba(0, 191, 255, 0.1);
+            color: var(--secondary-color);
+        }
+        
+        .activity-icon.price {
+            background-color: rgba(255, 140, 0, 0.1);
+            color: var(--primary-color);
+        }
+        
+        .activity-content {
+            flex: 1;
+        }
+        
+        .activity-content h6 {
+            margin-bottom: 3px;
+        }
+        
+        .activity-content p {
+            margin-bottom: 0;
+            font-size: 13px;
+            color: #666;
+        }
+        
+        .activity-time {
+            font-size: 12px;
+            color: #999;
+        }
+        
+        .create-listing-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background-color: var(--primary-color);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s;
+            z-index: 99;
+        }
+        
+        .create-listing-btn:hover {
+            transform: scale(1.1);
+            background-color: #e07e00;
+        }
+        
+        .create-listing-btn i {
+            font-size: 24px;
+        }
+        
+        /* Animations */
+        .fade-in {
+            animation: fadeIn 0.5s ease;
+        }
+        
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        /* Price tag styles */
+        .price-tag {
+            background-color: var(--dark-color);
+            color: white;
+            padding: 5px 10px;
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            font-weight: bold;
+            border-radius: 4px;
+        }
+        
+        /* Rating stars */
+        .rating {
+            color: #ffc107;
+        }
+        
+        /* Map container */
+        .map-container {
+            height: 300px;
+            position: relative;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        
+        .map-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
+    <script>
+        // Initialize tooltips
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl)
+        })
+        
+        // Add active class to current menu item
+        document.addEventListener('DOMContentLoaded', function() {
+            const menuItems = document.querySelectorAll('.sidebar-menu a');
+            menuItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    menuItems.forEach(i => i.classList.remove('active'));
+                    this.classList.add('active');
+                });
+            });
+            
+            // Filter buttons
+            const filterBtns = document.querySelectorAll('.filter-btn');
+            filterBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    filterBtns.forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                });
+            });
+        });
+    </script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FarmBoxx AI - Marketplace</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+    <style>
+        :root {
+            --primary: #FF8C00;
+            --secondary: #00BFFF;
+            --dark: #000000;
+            --light: #f8f9fa;
+            --success: #28a745;
+            --danger: #dc3545;
+            --warning: #ffc107;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 0;
+        }
+        
+        .sidebar {
+            background-color: var(--dark);
+            min-height: 100vh;
+            color: white;
+            position: fixed;
+            width: 240px;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            z-index: 100;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .content-area {
+            margin-left: 240px;
+            padding: 15px 30px;
+        }
+        
+        .logo-container {
+            padding: 20px;
+            text-align: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .logo img {
+            margin-right: 8px;
+            width: 32px;
+        }
+        
+        .nav-item {
+            padding: 12px 20px;
+            display: flex;
+            align-items: center;
+            color: rgba(255, 255, 255, 0.7);
+            transition: all 0.3s;
+            cursor: pointer;
+            text-decoration: none;
+        }
+        
+        .nav-item:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: white;
+        }
+        
+        .nav-item.active {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        .nav-item i {
+            margin-right: 10px;
+            width: 20px;
+            text-align: center;
+        }
+        
+        .card {
+            border-radius: 10px;
+            border: none;
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.05);
+            margin-bottom: 20px;
+            transition: transform 0.2s;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .card-header {
+            background-color: white;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+            padding: 15px 20px;
+            font-weight: 600;
+            font-size: 18px;
+            border-top-left-radius: 10px !important;
+            border-top-right-radius: 10px !important;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .marketplace-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary);
+            border-color: var(--primary);
+        }
+        
+        .btn-primary:hover {
+            background-color: #e07e00;
+            border-color: #e07e00;
+        }
+        
+        .btn-secondary {
+            background-color: var(--secondary);
+            border-color: var(--secondary);
+        }
+        
+        .btn-secondary:hover {
+            background-color: #00a8e0;
+            border-color: #00a8e0;
+        }
+        
+        #map {
+            height: 300px;
+            border-radius: 10px;
+        }
+        
+        .listing-card {
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 15px;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            transition: all 0.3s;
+        }
+        
+        .listing-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .listing-img {
+            height: 160px;
+            background-size: cover;
+            background-position: center;
+        }
+        
+        .listing-details {
+            padding: 15px;
+        }
+        
+        .price-tag {
+            background-color: var(--primary);
+            color: white;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+        
+        .badge-high-demand {
+            background-color: #dc3545;
+            color: white;
+        }
+        
+        .badge-medium-demand {
+            background-color: #fd7e14;
+            color: white;
+        }
+        
+        .badge-verified {
+            background-color: #28a745;
+            color: white;
+        }
+        
+        .table th {
+            font-weight: 600;
+        }
+        
+        .market-trend-up {
+            color: #28a745;
+        }
+        
+        .market-trend-down {
+            color: #dc3545;
+        }
+        
+        .filter-section {
+            background-color: white;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+        
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: var(--light);
+        }
+        
+        .notification-badge {
+            position: relative;
+        }
+        
+        .badge-count {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background-color: var(--danger);
+            color: white;
+            border-radius: 50%;
+            width: 18px;
+            height: 18px;
+            font-size: 11px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.5s ease-in;
+        }
+        
+        @keyframes slideUp {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        
+        .slide-up {
+            animation: slideUp 0.5s ease-out;
+        }
+        
+        /* Market activity animations */
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+        
+        /* Custom table for recent transactions */
+        .transaction-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0 8px;
+        }
+        
+        .transaction-table tr {
+            background-color: white;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+            border-radius: 8px;
+            transition: all 0.2s;
+        }
+        
+        .transaction-table tr:hover {
+            transform: translateX(5px);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .transaction-table td {
+            padding: 12px 15px;
+        }
+        
+        .transaction-table td:first-child {
+            border-top-left-radius: 8px;
+            border-bottom-left-radius: 8px;
+        }
+        
+        .transaction-table td:last-child {
+            border-top-right-radius: 8px;
+            border-bottom-right-radius: 8px;
+        }
+        
+        /* Modal styles */
+        .modal-content {
+            border-radius: 15px;
+            border: none;
+        }
+        
+        .modal-header {
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+            background-color: #f8f9fa;
+            border-top-left-radius: 15px !important;
+            border-top-right-radius: 15px !important;
+        }
+        
+        .form-control {
+            border-radius: 8px;
+            padding: 10px 15px;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+        }
+        
+        .form-control:focus {
+            box-shadow: 0 0 0 3px rgba(255, 140, 0, 0.2);
+            border-color: var(--primary);
+        }
+        
+        /* Demand indicators on map */
+        .demand-legend {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            background: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+            z-index: 1000;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+            font-size: 12px;
+        }
+        
+        .demand-dot {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            margin-right: 5px;
+        }
+        
+        .high-demand {
+            background-color: #dc3545;
+        }
+        
+        .medium-demand {
+            background-color: #fd7e14;
+        }
+        
+        .low-demand {
+            background-color: #28a745;
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <div class="logo-container">
+            <div class="logo">
+                <i class="fas fa-cow"></i> FarmBoxx AI
+            </div>
+        </div>
+        <div class="nav-links">
+            <a href="#" class="nav-item">
+                <i class="fas fa-chart-bar"></i> Dashboard
+            </a>
+            <a href="#" class="nav-item">
+                <i class="fas fa-cow"></i> Livestock
+            </a>
+            <a href="#" class="nav-item">
+                <i class="fas fa-heartbeat"></i> Health Monitor
+            </a>
+            <a href="#" class="nav-item">
+                <i class="fas fa-route"></i> Grazing Routes
+            </a>
+            <a href="#" class="nav-item">
+                <i class="fas fa-user-md"></i> Veterinary
+            </a>
+            <a href="#" class="nav-item active">
+                <i class="fas fa-store"></i> Marketplace
+            </a>
+            <a href="#" class="nav-item">
+                <i class="fas fa-truck"></i> Logistics
+            </a>
+            <a href="#" class="nav-item">
+                <i class="fas fa-chart-line"></i> Analytics
+            </a>
+            <a href="#" class="nav-item">
+                <i class="fas fa-cog"></i> Settings
+            </a>
+        </div>
+    </div>
+
+    <!-- Main Content Area -->
+    <div class="content-area">
+        <!-- Header -->
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2>FarmBoxx AI Marketplace</h2>
+            <div class="header-actions">
+                <div class="notification-badge">
+                    <i class="fas fa-bell fa-lg"></i>
+                    <span class="badge-count">3</span>
+                </div>
+                <div class="user-profile">
+                    <img src="../asset/img/card-image.png" class="user-avatar" alt="User">
+                    <div class="dropdown">
+                        <a class="dropdown-toggle text-dark text-decoration-none" href="#" role="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                            Musa Abdullahi <i class="fas fa-chevron-down ms-1"></i>
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="userDropdown">
+                            <li><a class="dropdown-item" href="#"><i class="fas fa-user me-2"></i> Profile</a></li>
+                            <li><a class="dropdown-item" href="#"><i class="fas fa-cog me-2"></i> Settings</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="#"><i class="fas fa-sign-out-alt me-2"></i> Logout</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+         <!-- Marketplace Header -->
+        <div class="row mb-4 fade-in">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row align-items-center">
+                            <div class="col-lg-6">
+                                <h2>Connect Directly with Buyers & Sellers</h2>
+                                <p class="lead">Nigeria's first AI-powered livestock marketplace connecting farmers to verified buyers, eliminating middlemen and maximizing your profits.</p>
+                                 <!-- Marketplace Controls -->
+                                    <div class="marketplace-header slide-up">
+                                        <div>
+                                            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#newListingModal">
+                                                <i class="fas fa-plus"></i> New Listing
+                                            </button>
+                                            <button class="btn btn-outline-secondary ms-2">
+                                                <i class="fas fa-filter"></i> Filter
+                                            </button>
+                                        </div>
+                                        <div class="d-flex">
+                                            <input type="text" class="form-control" placeholder="Search marketplace...">
+                                            <button class="btn btn-secondary ms-2">
+                                                <i class="fas fa-search"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                            </div>
+                            <div class="col-lg-6 text-center">
+                                <img src="/api/placeholder/500/300" alt="Marketplace illustration" class="img-fluid rounded" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Market Statistics -->
+        <div class="row mb-4 fade-in">
+            <div class="col-md-3">
+                <div class="stats-card primary">
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <p>Active Listings</p>
+                            <h3>234</h3>
+                        </div>
+                        <div>
+                            <i class="fas fa-tag fa-2x text-muted"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stats-card secondary">
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <p>Completed Sales</p>
+                            <h3>1,428</h3>
+                        </div>
+                        <div>
+                            <i class="fas fa-handshake fa-2x text-muted"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stats-card success">
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <p>Avg. Sale Time</p>
+                            <h3>3.2 days</h3>
+                        </div>
+                        <div>
+                            <i class="fas fa-clock fa-2x text-muted"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stats-card" style="border-left-color: var(--warning-color);">
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <p>Your Revenue</p>
+                            <h3>₦1.2M</h3>
+                        </div>
+                        <div>
+                            <i class="fas fa-coins fa-2x text-muted"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        
+       
+        
+        <div class="row">
+            <!-- Left Column: Map and Demand Analysis -->
+            <div class="col-lg-8">
+                <div class="card slide-up">
+                    <div class="card-header">
+                        <span><i class="fas fa-map-marker-alt me-2"></i> Livestock Demand Map</span>
+                        <div class="dropdown">
+                            <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" id="mapFilterDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                                All Livestock
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="mapFilterDropdown">
+                                <li><a class="dropdown-item" href="#">All Livestock</a></li>
+                                <li><a class="dropdown-item" href="#">Cattle</a></li>
+                                <li><a class="dropdown-item" href="#">Goats</a></li>
+                                <li><a class="dropdown-item" href="#">Sheep</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div id="map"></div>
+                        <div class="demand-legend">
+                            <div><span class="demand-dot high-demand"></span> High Demand</div>
+                            <div><span class="demand-dot medium-demand"></span> Medium Demand</div>
+                            <div><span class="demand-dot low-demand"></span> Low Demand</div>
+                        </div>
+                        <div class="mt-3">
+                            <p class="text-muted"><i class="fas fa-info-circle me-1"></i> Map shows areas with highest livestock demand based on current market data.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Market Activity -->
+                <div class="card fade-in">
+                    <div class="card-header">
+                        <span><i class="fas fa-chart-line me-2"></i> Market Activity</span>
+                        <button class="btn btn-sm btn-outline-primary">
+                            <i class="fas fa-sync-alt me-1"></i> Refresh
+                        </button>
+                    </div>
+                    <div class="card-body">
+                        <table class="transaction-table">
+                            <tbody>
+                                <tr>
+                                    <td style="width: 40px"><i class="fas fa-exchange-alt text-primary"></i></td>
+                                    <td>
+                                        <strong>10 Cattle Sold</strong><br>
+                                        <span class="text-muted small">Kano Central Market</span>
+                                    </td>
+                                    <td class="text-end">
+                                        <span class="price-tag">₦3,500,000</span><br>
+                                        <span class="text-muted small">25 minutes ago</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><i class="fas fa-exchange-alt text-primary"></i></td>
+                                    <td>
+                                        <strong>15 Goats Sold</strong><br>
+                                        <span class="text-muted small">Lagos Livestock Market</span>
+                                    </td>
+                                    <td class="text-end">
+                                        <span class="price-tag">₦1,125,000</span><br>
+                                        <span class="text-muted small">1 hour ago</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><i class="fas fa-exchange-alt text-primary"></i></td>
+                                    <td>
+                                        <strong>8 Sheep Sold</strong><br>
+                                        <span class="text-muted small">Ibadan Central Market</span>
+                                    </td>
+                                    <td class="text-end">
+                                        <span class="price-tag">₦680,000</span><br>
+                                        <span class="text-muted small">2 hours ago</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><i class="fas fa-exchange-alt text-primary"></i></td>
+                                    <td>
+                                        <strong>5 Cattle Sold</strong><br>
+                                        <span class="text-muted small">Abuja Livestock Exchange</span>
+                                    </td>
+                                    <td class="text-end">
+                                        <span class="price-tag">₦1,750,000</span><br>
+                                        <span class="text-muted small">3 hours ago</span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                <!-- My Listings -->
+                <div class="card slide-up">
+                    <div class="card-header">
+                        <span><i class="fas fa-list me-2"></i> My Listings</span>
+                        <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#newListingModal">
+                            <i class="fas fa-plus me-1"></i> Add New
+                        </button>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table" id="listingsTable">
+                                <thead>
+                                    <tr>
+                                        <th>Type</th>
+                                        <th>Quantity</th>
+                                        <th>Age/Health</th>
+                                        <th>Price (₦)</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><i class="fas fa-cow me-1"></i> Cattle</td>
+                                        <td>5</td>
+                                        <td>3-5 years / Healthy</td>
+                                        <td>₦1,750,000</td>
+                                        <td><span class="badge bg-success">Active</span></td>
+                                        <td>
+                                            <button class="btn btn-sm btn-outline-primary"><i class="fas fa-edit"></i></button>
+                                            <button class="btn btn-sm btn-outline-danger ms-1"><i class="fas fa-trash"></i></button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><i class="fas fa-sheep me-1"></i> Sheep</td>
+                                        <td>10</td>
+                                        <td>1-3 years / Healthy</td>
+                                        <td>₦850,000</td>
+                                        <td><span class="badge bg-success">Active</span></td>
+                                        <td>
+                                            <button class="btn btn-sm btn-outline-primary"><i class="fas fa-edit"></i></button>
+                                            <button class="btn btn-sm btn-outline-danger ms-1"><i class="fas fa-trash"></i></button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><i class="fas fa-baby-carriage me-1"></i> Goats</td>
+                                        <td>8</td>
+                                        <td>1-2 years / Healthy</td>
+                                        <td>₦600,000</td>
+                                        <td><span class="badge bg-secondary">Pending</span></td>
+                                        <td>
+                                            <button class="btn btn-sm btn-outline-primary"><i class="fas fa-edit"></i></button>
+                                            <button class="btn btn-sm btn-outline-danger ms-1"><i class="fas fa-trash"></i></button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Right Column: Market Prices, Featured Listings -->
+            <div class="col-lg-4">
+                <!-- Current Market Prices -->
+                <div class="card fade-in">
+                    <div class="card-header">
+                        <i class="fas fa-tags me-2"></i> Current Market Prices
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-3 pb-3 border-bottom">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <h5>Cattle (per head)</h5>
+                                    <span class="text-success"><i class="fas fa-arrow-up me-1"></i> 5.2% vs last week</span>
+                                </div>
+                                <h3 class="mb-0 text-primary">₦350,000</h3>
+                            </div>
+                        </div>
+                        <div class="mb-3 pb-3 border-bottom">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <h5>Goats (per head)</h5>
+                                    <span class="text-danger"><i class="fas fa-arrow-down me-1"></i> 2.1% vs last week</span>
+                                </div>
+                                <h3 class="mb-0 text-primary">₦75,000</h3>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <h5>Sheep (per head)</h5>
+                                    <span class="text-success"><i class="fas fa-arrow-up me-1"></i> 1.8% vs last week</span>
+                                </div>
+                                <h3 class="mb-0 text-primary">₦85,000</h3>
+                            </div>
+                        </div>
+                        <button class="btn btn-outline-primary w-100 mt-3">
+                            <i class="fas fa-download me-1"></i> Download Price Report
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Featured Listings -->
+                <!-- <div class="card slide-up">
+                    <div class="card-header">
+                        <i class="fas fa-star me-2"></i> Featured Listings
+                    </div>
+                    <div class="card-body">
+                        <div class="listing-card">
+                            <div class="listing-img" style="background-image: url('/api/placeholder/400/300')"></div>
+                            <div class="listing-details">
+                                <div class="d-flex justify-content-between">
+                                    <h5 class="mb-1">Premium Cattle</h5>
+                                    <span class="badge badge-high-demand">High Demand</span>
+                                </div>
+                                <p class="mb-1"><i class="fas fa-map-marker-alt me-1"></i> Kaduna, Nigeria</p>
+                                <div class="d-flex justify-content-between align-items-center mt-2">
+                                    <div>
+                                        <span class="text-muted">10 available</span>
+                                    </div>
+                                    <span class="price-tag">₦350,000 each</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="listing-card mt-3">
+                            <div class="listing-img" style="background-image: url('/api/placeholder/400/300')"></div>
+                            <div class="listing-details">
+                                <div class="d-flex justify-content-between">
+                                    <h5 class="mb-1">Healthy Goats</h5>
+                                    <span class="badge badge-medium-demand">Medium Demand</span>
+                                </div>
+                                <p class="mb-1"><i class="fas fa-map-marker-alt me-1"></i> Lagos, Nigeria</p>
+                                <div class="d-flex justify-content-between align-items-center mt-2">
+                                    <div>
+                                        <span class="text-muted">15 available</span>
+                                    </div>
+                                    <span class="price-tag">₦75,000 each</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="listing-card mt-3">
+                            <div class="listing-img" style="background-image: url('/api/placeholder/400/300')"></div>
+                            <div class="listing-details">
+                                <div class="d-flex justify-content-between">
+                                    <h5 class="mb-1">Quality Sheep</h5>
+                                    <span class="badge badge-verified">Verified</span>
+                                </div>
+                                <p class="mb-1"><i class="fas fa-map-marker-alt me-1"></i> Ibadan, Nigeria</p>
+                                <div class="d-flex justify-content-between align-items-center mt-2">
+                                    <div>
+                                        <span class="text-muted">8 available</span>
+                                    </div>
+                                    <span class="price-tag">₦85,000 each</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div> -->
+                
+                <!-- Seller Ratings -->
+                <div class="card fade-in">
+                    <div class="card-header">
+                        <i class="fas fa-award me-2"></i> Top-Rated Sellers
+                    </div>
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom">
+                            <div class="d-flex align-items-center">
+                                <img src="../asset/img/card-image.png" class="rounded-circle me-2" alt="Seller">
+                                <div>
+                                    <h6 class="mb-0">Ibrahim Farms</h6>
+                                    <div>
+                                        <i class="fas fa-star text-warning"></i>
+                                        <i class="fas fa-star text-warning"></i>
+                                        <i class="fas fa-star text-warning"></i>
+                                        <i class="fas fa-star text-warning"></i>
+                                        <i class="fas fa-star text-warning"></i>
+                                        <span class="ms-1 small">5.0</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <span class="badge bg-success">Verified</span>
+                        </div>
+                        
+                        <div class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom">
+                            <div class="d-flex align-items-center">
+                                <img src="../asset/img/card-image.png" class="rounded-circle me-2" alt="Seller">
+                                <div>
+                                    <h6 class="mb-0">Amaka Livestock</h6>
+                                    <div>
+                                        <i class="fas fa-star text-warning"></i>
+                                        <i class="fas fa-star text-warning"></i>
+                                        <i class="fas fa-star text-warning"></i>
+                                        <i class="fas fa-star text-warning"></i>
+                                        <i class="fas fa-star-half-alt text-warning"></i>
+                                        <span class="ms-1 small">4.5</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <span class="badge bg-success">Verified</span>
+                        </div>
+                        
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="d-flex align-items-center">
+                                <img src="../asset/img/card-image.png" class="rounded-circle me-2" alt="Seller">
+                                <div>
+                                    <h6 class="mb-0">Musa Livestock</h6>
+                                    <div>
+                                        <i class="fas fa-star text-warning"></i>
+                                        <i class="fas fa-star text-warning"></i>
+                                        <i class="fas fa-star text-warning"></i>
+                                        <i class="fas fa-star text-warning"></i>
+                                        <i class="far fa-star text-warning"></i>
+                                        <span class="ms-1 small">4.0</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <span class="badge bg-success">Verified</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+         <!-- Marketplace Benefits -->
+        <h5 class="mb-3">Why FarmBoxx AI Marketplace?</h5>
+        <div class="row mb-4 fade-in">
+            <div class="col-md-3">
+                <div class="card h-100 text-center p-3">
+                    <div class="mb-3">
+                        <i class="fas fa-hand-holding-usd fa-3x text-primary"></i>
+                    </div>
+                    <h5>Better Prices</h5>
+                    <p class="text-muted">Sell directly to buyers and get up to 30% more profit by eliminating middlemen.</p>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card h-100 text-center p-3">
+                    <div class="mb-3">
+                        <i class="fas fa-shield-alt fa-3x text-primary"></i>
+                    </div>
+                    <h5>Verified Buyers</h5>
+                    <p class="text-muted">All buyers are verified to ensure secure and reliable transactions.</p>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card h-100 text-center p-3">
+                    <div class="mb-3">
+                        <i class="fas fa-truck fa-3x text-primary"></i>
+                    </div>
+                    <h5>Logistics Support</h5>
+                    <p class="text-muted">Integrated transport solutions to deliver livestock safely to buyers.</p>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card h-100 text-center p-3">
+                    <div class="mb-3">
+                        <i class="fas fa-heartbeat fa-3x text-primary"></i>
+                    </div>
+                    <h5>Health Records</h5>
+                    <p class="text-muted">Share verified health records to get premium prices for quality livestock.</p>
+                </div>
+            </div>
+        </div>
+         <!-- CTA Section -->
+        <div class="row mb-4 fade-in">
+            <div class="col-md-12">
+                <div class="card" style="background-color: var(--primary-color); color: white;">
+                    <div class="card-body p-4">
+                        <div class="row align-items-center">
+                            <div class="col-lg-8">
+                                <h3>Ready to transform your livestock business?</h3>
+                                <p class="lead mb-4">Join thousands of Nigerian farmers who are increasing profits and improving livestock management with FarmBoxx AI.</p>
+                                <button class="btn btn-light me-2"><i class="fas fa-plus-circle me-2"></i>Create Listing</button>
+                                <button class="btn btn-outline-light"><i class="fas fa-info-circle me-2"></i>Learn More</button>
+                            </div>
+                            <div class="col-lg-4 text-center">
+                                <img src="/api/placeholder/300/200" alt="Livestock farmer" class="img-fluid rounded">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+          <!-- Testimonials -->
+        <h5 class="mb-3">Success Stories</h5>
+        <div class="row mb-4 fade-in">
+            <div class="col-md-4 mb-3">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <div class="d-flex mb-3">
+                            <img src="../asset/img/card-image.png" alt="User" class="rounded-circle me-3">
+                            <div>
+                                <h6 class="mb-1">Ibrahim Mohammed</h6>
+                                <div class="text-warning">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <p class="card-text">"Before FarmBoxx AI, I was selling my cattle at whatever price middlemen offered. Now I connect directly with buyers across Nigeria and get 20-30% more for my livestock. The health tracking also helps me prove my animals are healthy."</p>
+                        <div class="text-muted small">
+                            <i class="fas fa-map-marker-alt me-1"></i> Kaduna, Nigeria
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-3">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <div class="d-flex mb-3">
+                            <img src="../asset/img/card-image.png" alt="User" class="rounded-circle me-3">
+                            <div>
+                                <h6 class="mb-1">Amaka Okonkwo</h6>
+                                <div class="text-warning">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star-half-alt"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <p class="card-text">"As a small-scale goat farmer in Ogun State, I struggled to find reliable buyers. FarmBoxx AI connected me with premium buyers in Lagos who value my healthy, traceable livestock. My income has increased by 40% in just six months!"</p>
+                        <div class="text-muted small">
+                            <i class="fas fa-map-marker-alt me-1"></i> Ogun State, Nigeria
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-3">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <div class="d-flex mb-3">
+                            <img src="../asset/img/card-image.png" alt="User" class="rounded-circle me-3">
+                            <div>
+                                <h6 class="mb-1">Adamu Yusuf</h6>
+                                <div class="text-warning">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <p class="card-text">"The grazing route planning and early disease detection have saved my herd multiple times. I can now avoid conflicts with farmers and detect health issues before they become serious. The marketplace connects me with buyers who pay premium prices."</p>
+                        <div class="text-muted small">
+                            <i class="fas fa-map-marker-alt me-1"></i> Kano, Nigeria
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Add New Listing Modal -->
+    <div class="modal fade" id="newListingModal" tabindex="-1" aria-labelledby="newListingModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="newListingModalLabel"><i class="fas fa-plus-circle me-2"></i>Add New Livestock Listing</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="newListingForm">
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="livestockType" class="form-label">Livestock Type</label>
+                                <select class="form-select" id="livestockType" required>
+                                    <option value="" selected disabled>Select livestock type</option>
+                                    <option value="Cattle">Cattle</option>
+                                    <option value="Goats">Goats</option>
+                                    <option value="Sheep">Sheep</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="quantity" class="form-label">Quantity</label>
+                                <input type="number" class="form-control" id="quantity" min="1" required>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="age" class="form-label">Age</label>
+                                <select class="form-select" id="age" required>
+                                    <option value="" selected disabled>Select age range</option>
+                                    <option value="0-1 year">0-1 Year</option>
+                                    <option value="1-3 years">1-3 Years</option>
+                                    <option value="3-5 years">3-5 Years</option>
+                                    <option value="5+ years">5+ Years</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="health" class="form-label">Health Status</label>
+                                <select class="form-select" id="health" required>
+                                    <option value="" selected disabled>Select health status</option>
+                                    <option value="Healthy">Healthy</option>
+                                    <option value="Vaccinated">Vaccinated</option>
+                                    <option value="Treated">Recently Treated</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="pricePerHead" class="form-label">Price per Head (₦)</label>
+                                <input type="number" class="form-control" id="pricePerHead" min="1000" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="location" class="form-label">Location</label>
+                                <input type="text" class="form-control" id="location" placeholder="e.g., Kaduna, Nigeria" required>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="description" class="form-label">Description</label>
+                            <textarea class="form-control" id="description" rows="3" placeholder="Provide details about your livestock..."></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="uploadPhoto" class="form-label">Upload Photos</label>
+                            <input type="file" class="form-control" id="uploadPhoto" multiple>
+                            <div class="form-text">You can upload up to 5 photos</div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" id="submitListing">Add Listing</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js"></script>
+    <script>
+        // Initialize the map as soon as the page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize map
+            const map = L.map('map').setView([9.0820, 8.6753], 6); // Nigeria center coordinates
+            
+            // Add tile layer (OpenStreetMap)
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            }).addTo(map);
+            
+            // Add demand hotspots with proper icons
+            // High demand areas (red)
+            addDemandMarker(map, [9.8965, 8.8583], 'high', 'Plateau - High demand for cattle');  // Jos
+            addDemandMarker(map, [6.5244, 3.3792], 'high', 'Lagos - High demand for all livestock'); // Lagos
+            addDemandMarker(map, [9.0579, 7.4951], 'high', 'Abuja - High demand for premium cattle'); // Abuja
+            
+            // Medium demand areas (orange)
+            addDemandMarker(map, [7.3775, 3.9470], 'medium', 'Ibadan - Medium demand for goats and sheep'); // Ibadan
+            addDemandMarker(map, [6.3350, 5.6037], 'medium', 'Benin - Medium demand for all livestock'); // Benin
+            addDemandMarker(map, [10.5167, 7.4333], 'medium', 'Kaduna - Medium demand for cattle'); // Kaduna
+            
+            // Low demand but growing areas (green)
+            addDemandMarker(map, [12.0000, 8.5167], 'low', 'Kano - Steady demand for all livestock'); // Kano
+            addDemandMarker(map, [5.0039, 7.9210], 'low', 'Port Harcourt - Growing demand for goats'); // Port Harcourt
+            addDemandMarker(map, [11.8311, 13.1510], 'low', 'Maiduguri - Emerging market for sheep'); // Maiduguri
+            
+            // Handle the Add Listing form submission
+            document.getElementById('submitListing').addEventListener('click', function() {
+                const form = document.getElementById('newListingForm');
+                
+                // Basic form validation
+                const livestockType = document.getElementById('livestockType').value;
+                const quantity = document.getElementById('quantity').value;
+                const age = document.getElementById('age').value;
+                const health = document.getElementById('health').value;
+                const pricePerHead = document.getElementById('pricePerHead').value;
+                const location = document.getElementById('location').value;
+                
+                if (!livestockType || !quantity || !age || !health || !pricePerHead || !location) {
+                    alert('Please fill in all required fields.');
+                    return;
+                }
+                
+                // If validation passes, add the new listing to the table
+                addNewListing(livestockType, quantity, age + ' / ' + health, pricePerHead);
+                
+                // Close the modal
+                const modal = bootstrap.Modal.getInstance(document.getElementById('newListingModal'));
+                modal.hide();
+                
+                // Show success message
+                showNotification('Listing added successfully!', 'success');
+                
+                // Reset form
+                form.reset();
+            });
+        });
+        
+        // Function to add demand markers to the map
+        function addDemandMarker(map, coordinates, demandLevel, tooltip) {
+            const markerColors = {
+                'high': '#dc3545',    // Red
+                'medium': '#fd7e14',  // Orange
+                'low': '#28a745'      // Green
+            };
+            
+            // Create custom icon
+            const demandIcon = L.divIcon({
+                className: 'custom-div-icon',
+                html: `<div style="background-color: ${markerColors[demandLevel]}; width: 15px; height: 15px; border-radius: 50%; border: 2px solid white;"></div>`,
+                iconSize: [15, 15],
+                iconAnchor: [7, 7]
+            });
+            
+            // Add marker with the custom icon
+            L.marker(coordinates, {icon: demandIcon})
+                .addTo(map)
+                .bindTooltip(tooltip);
+        }
+        
+        // Function to add a new listing to the listings table
+        function addNewListing(type, quantity, healthAge, price) {
+            const table = document.getElementById('listingsTable').getElementsByTagName('tbody')[0];
+            const newRow = table.insertRow();
+            
+            // Icon based on livestock type
+            let icon = 'fas fa-cow';
+            if (type === 'Goats') {
+                icon = 'fas fa-baby-carriage'; // Using a substitute icon
+            } else if (type === 'Sheep') {
+                icon = 'fas fa-sheep'; // Using a substitute icon
+            }
+            
+            // Format price with Naira symbol
+            const formattedPrice = '₦' + new Intl.NumberFormat().format(price);
+            
+            // Insert cells
+            newRow.innerHTML = `
+                <td><i class="${icon} me-1"></i> ${type}</td>
+                <td>${quantity}</td>
+                <td>${healthAge}</td>
+                <td>${formattedPrice}</td>
+                <td><span class="badge bg-secondary">Pending</span></td>
+                <td>
+                    <button class="btn btn-sm btn-outline-primary"><i class="fas fa-edit"></i></button>
+                    <button class="btn btn-sm btn-outline-danger ms-1"><i class="fas fa-trash"></i></button>
+                </td>
+            `;
+            
+            // Add animation to the new row
+            newRow.classList.add('fade-in');
+            
+            // Add event listeners to the new buttons
+            const editBtn = newRow.querySelector('.btn-outline-primary');
+            const deleteBtn = newRow.querySelector('.btn-outline-danger');
+            
+            editBtn.addEventListener('click', function() {
+                alert('Edit functionality would open an edit form');
+            });
+            
+            deleteBtn.addEventListener('click', function() {
+                if (confirm('Are you sure you want to delete this listing?')) {
+                    newRow.remove();
+                    showNotification('Listing deleted successfully!', 'warning');
+                }
+            });
+        }
+        
+        // Function to show notification
+        function showNotification(message, type) {
+            // Create notification element
+            const notification = document.createElement('div');
+            notification.className = `alert alert-${type} alert-dismissible fade show fixed-top mx-auto mt-3`;
+            notification.style.maxWidth = '500px';
+            notification.style.zIndex = '9999';
+            notification.innerHTML = `
+                ${message}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            `;
+            
+            // Add to document
+            document.body.appendChild(notification);
+            
+            // Remove after 3 seconds
+            setTimeout(() => {
+                notification.classList.remove('show');
+                setTimeout(() => {
+                    notification.remove();
+                }, 300);
+            }, 3000);
+        }
+    </script>
+</body>
+</html>
